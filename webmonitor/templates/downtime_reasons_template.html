@@ -1,0 +1,96 @@
+<div class="template">
+    <div class="row">
+        <div url-endpoint="{% url 'api-data' %}" class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading dropdown">
+                    <h3 class="panel-title dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-bar-chart-o"></i>
+                    </h3>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-submenu">
+                            <a class="test" tabindex="-1" href="#">Type<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a tabindex="-1" href="#">Downtime Reasons Pareto</a></li>
+                                <li><a tabindex="-1" href="#">Downtime Root Couses Pareto</a></li>
+                                <li><a tabindex="-1" href="#">Scheduling Reasons Pareto</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu">
+                            <a class="test" tabindex="-1" href="#">Settings<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu">
+                                    <a class="test" tabindex="-1" href="#">Chart<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a tabindex="-1" href="#">Hide</a></li>
+                                        <li><a tabindex="-1" href="#">Parameters</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu">
+                                    <a class="test" tabindex="-1" href="#">Table<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a tabindex="-1" href="#">Hide</a></li>
+                                        <li><a tabindex="-1" href="#">Columns</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown-submenu"><a tabindex="-1" href="#">Group</a></li>
+                                <li>
+                                    <a class="test" href="#">Limit Reasons<span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                       <li><a href="#">Limit Type</a></li>
+                                       <li><a href="#">Limit</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a tabindex="-1" href="#">Filters</span></a></li>
+                        <li class="dropdown-submenu">
+                            <a class="test" tabindex="-1" href="#">Export<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a tabindex="-1" href="#">Print</a></li>
+                                <li><a tabindex="-1" href="#">Excel</a></li>
+                                <li><a tabindex="-1" href="#">Csv</a></li>
+                                <li><a tabindex="-1" href="#">PDF</a></li>
+                                <li><a tabindex="-1" href="#">Email</a></li>
+                            </ul>
+                        </li>
+                        <li><a tabindex="-1" href="#">Edit Title</span></a></li>
+                        <li class="dropdown-submenu">
+                            <a class="test" tabindex="-1" href="#">Default<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a tabindex="-1" href="#">Apply</a></li>
+                                <li><a tabindex="-1" href="#">Reset</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel-body">
+                    <canvas id="chartjs_bar" class="img-responsive"></canvas>
+                </div>
+            </div>
+        </div>
+
+            <div class="table-responsive col-lg-6">
+                <table id="tbl-dtr" class="display nowrap" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Ocurrences</th>
+                            <th>Duration</th>
+                            <th>Avg. Ocurrence</th>
+                            <th>Percentage</th>
+                        </tr>
+                        </thead>
+                                <tfoot>
+                        <tr>
+                            <th>Name</th>
+                            <th>Ocurrences</th>
+                            <th>Duration</th>
+                            <th>Avg. Ocurrence</th>
+                            <th>Percentage</th>
+                        </tr>
+                        </tfoot>
+                     <tbody id="tbl-body">
+                     </tbody>
+                </table>
+            </div>
+        </div>
+</div>

@@ -1,0 +1,143 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>{% block title %}Bootstrap Ajover Template{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Raleway|PT+Sans|Open+Sans|Cabin|Bree+Serif"/>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <link href="{% static 'AjProdMonitorApp/css/style.css' %}" rel="stylesheet"/>
+    <link href="{% static 'AjProdMonitorApp/css/awesome_checkbox.css' %}" rel="stylesheet"/>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    {% block head %}
+    {% endblock %}
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!--[if IE]>
+    <link rel="shortcut icon" href="/AjProdMonitorApp/static/images/1491944224_alert.ico"><![endif]-->
+    <link rel="apple-touch-icon-precomposed" href="/AjProdMonitorApp/static/images/1491944236_alert.png">
+    <link rel="icon" href="/AjProdMonitorApp/static/images/1491944242_alert.png">
+    <style>
+   .red-icon {
+        color: red;
+   }
+   .blue-icon {
+        color: blue;
+   }
+   .green-icon {
+        color: green;
+   }
+   @font-size: 6px;
+   .tree-font-size {
+        font-size: @font-size;
+   }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/webmonitor/">Ajover ProdMonitor</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                {% if user.is_authenticated %}
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Help</a></li>
+                <li><a href="/admin" target="_blank">Administration</a></li>
+                <li><a href="/accounts/logout">Logout ({{ user.username }})</a></li>
+                {% endif %}
+            </ul>
+            <!--<form class="navbar-form navbar-right">
+              <input type="text" class="form-control" placeholder="Search...">
+            </form>-->
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <h3>Reports</H3>
+            <ul class="nav nav-sidebar">
+                <!-- {{request.path}} -->
+                <li {% if request.path == "/webmonitor/" %}class="active"{% endif %}><a href="{% url 'index' %}">Home</a></li>
+                <li {% if "/machine-status/" in request.path %}class="active"{% endif %}><a href="{% url 'report-machinestatus' %}">Machine status</a></li>
+                <li {% if "/downtime-reasons/" in request.path %}class="active"{% endif %}><a href="{% url 'report-downtimereasons' %}">Downtime reasons</a></li>
+                <li {% if "/production-rollup/" in request.path %}class="active"{% endif %}><a href="{% url 'report-productionrollup' %}">Production machine rollup</a></li>
+                <li {% if "/status-rollup/" in request.path %}class="active"{% endif %}><a href="{% url 'report-statusrollup' %}">Machine status rollup</a></li>
+                <li {% if "/variable-trend-rollup/" in request.path %}class="active"{% endif %}><a href="{% url 'report-variabletrendrollup' %}">Variable trend rollup</a></li>
+            </ul>
+            <h3><a href="{% url 'report_dashboard' %}">Dashboards</a></H3>
+            <ul class="nav nav-sidebar">
+                <!-- {{request.path}} -->
+                <div>
+                    <div id="treeview5" class="tree-font-size"></div>
+                </div>
+            </ul>
+
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h2>{% block page-title %}Ajover production monitor{% endblock %}</h2>
+            {% block main-content %}{% endblock %}
+            {% block sidebar %}{% endblock %}
+        </div>
+    </div>
+</div>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<script src="{% static 'AjProdMonitorApp/js/spinner/retina-1.1.0.js' %}"></script>
+<script src="{% static 'AjProdMonitorApp/js/spinner/jquery.hoverdir.js' %}"></script>
+<script src="{% static 'AjProdMonitorApp/js/spinner/jquery.hoverex.min.js' %}"></script>
+<script src="{% static 'AjProdMonitorApp/js/spinner/jquery.prettyPhoto.js' %}"></script>
+<script src="{% static 'AjProdMonitorApp/js/spinner/jquery.isotope.min.js' %}"></script>
+<script src="{% static 'AjProdMonitorApp/js/spinner/bootstrap.min.js' %}"></script>
+<script src="https://rawgit.com/joseshiru/p-loading/master/dist/js/p-loading.js"></script>
+<script src="{% static 'AjProdMonitorApp/js/tree_view/bootstrap-treeview.js' %}"></script>
+<script>
+
+        function treeLoad()
+        {
+            var url = "/webmonitor/filters/model-tree-view/";
+            var jqxhr = $.getJSON(url, function() {});
+            var defaultData, defaultData2;
+
+            jqxhr.done(function(data) {
+                defaultData = '['+JSON.stringify(data)+']';
+                defaultData = defaultData.substr(6,defaultData.length - 8);
+                $('#treeview5').treeview({
+                  color: "#428bca",
+                  expandIcon: 'glyphicon glyphicon-chevron-right',
+                  collapseIcon: 'glyphicon glyphicon-chevron-down',
+                  data: defaultData
+                });
+                $('#treeview5').treeview('expandAll', { levels: 4, silent: true });
+            });
+        }
+        treeLoad();
+        setInterval(treeLoad, 30000);
+
+
+</script>
+{% block scripts %}
+{% endblock %}
+</body>
+</html>

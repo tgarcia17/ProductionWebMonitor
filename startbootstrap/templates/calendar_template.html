@@ -1,0 +1,46 @@
+{% load i18n %}
+<form action="" method="" id="custom-report-form" accept-charset="utf-8">
+    {% csrf_token %}
+    {% trans "# Days from now" as days_from %}
+    <div class="row">
+        <div class="col-md-6">
+            <label for="startDttm">{% trans "Start Date:" %}</label>
+            <input type="date" class="form-control" id="startDttm" name="startDttm" value="{{fromDate|date:"Y-m-d" }}">
+            <label for="startTime">{% trans "Start Time:" %}</label>
+            <input type="time" class="form-control" id="startTime" name="startTime" value="">
+            <br/>
+            <label for="start-num-days">{{ days_from }}</label>
+            <input type="number" class="form-control" id="start-num-days" placeholder="{{ days_from }}"/>
+        </div>
+        <div class="col-md-6">
+            <label for="endDttm">{% trans "End Date:" %}</label>
+            <input type="date" class="form-control" id="endDttm" name="endDttm" value="{{toDate|date:"Y-m-d" }}">
+            <label for="endTime">{% trans "End Time:" %}</label>
+            <input type="time" class="form-control" id="endTime" name="endTime" value="">
+            <br/>
+            <label for="end-num-days">{{ days_from }}</label>
+            <input type="number" class="form-control" id="end-num-days" placeholder="{{ days_from }}"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <br/>
+            <button id="today" value="N" type="button" class="btn btn-secondary">{% trans "Today" %}</button>
+            <button id="lastweek" value="N" type="button" class="btn btn-secondary">{% trans "Last Week" %}</button>
+            <button id="thisweek" value="N" type="button" class="btn btn-secondary">{% trans "This week" %}</button>
+            <button id="lastmonth" value="N" type="button" class="btn btn-secondary">{% trans "Last Month" %}</button>
+            <button id="thismonth" value="N" type="button" class="btn btn-secondary">{% trans "This Month" %}</button>
+        </div>
+    </div>
+    <div class="row">
+        <div id="widget-size">
+            <legend>Period</legend>
+            <div class="col-md-12">
+                <label><input type="radio" name="optradio" value="hour" id="hour">{% trans "Hour" %}</label>
+                <label><input type="radio" name="optradio" value="day" id="day">{% trans "Day" %}</label>
+                <label><input type="radio" name="optradio" value="week" id="week">{% trans "Week" %}</label>
+                <label><input type="radio" name="optradio" value="month" id="month">{% trans "Month" %}</label>
+            </div>
+        </div>
+    </div>
+</form>

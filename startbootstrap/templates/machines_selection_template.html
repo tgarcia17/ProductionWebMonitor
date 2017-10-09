@@ -1,0 +1,50 @@
+{% load i18n %}
+<form action="" method="" id="custom-report-form" accept-charset="utf-8">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-4">
+            <fieldset>
+                <legend>{% trans "Company" %}</legend>
+                {% for cUser in company_list %}
+                <div class="checkbox checkbox-info checkbox-circle">
+                    <input type="checkbox" id="company-{{ cUser.machineGroup.plant.site.company.companyId}}"
+                           value="{{ cUser.machineGroup.plant.site.company.companyId}}" name="cbx-company"/>
+                    <label for="company-{{ cUser.machineGroup.plant.site.company.companyId}}">{{ cUser.machineGroup.plant.site.company.companyDescr }}</label>
+                </div>
+                {% endfor %}
+            </fieldset>
+        </div>
+        <div class="col-md-4">
+            <fieldset>
+                <legend>{% trans "Site" %}</legend>
+                <div id="site">
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-md-4">
+            <fieldset>
+                <legend>{% trans "Plant" %}</legend>
+                <div id="plant">
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <fieldset>
+                <legend>{% trans "Machine Group" %}</legend>
+                <div id="machine-group">
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-md-4">
+            <fieldset>
+                <legend>{% trans "Machines" %}</legend>
+                <div id="machine" name="machine">
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+</form>
+

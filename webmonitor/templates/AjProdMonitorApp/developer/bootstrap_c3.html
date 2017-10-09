@@ -1,0 +1,67 @@
+{% extends 'AjProdMonitorApp/base.html' %}
+{% load staticfiles %}
+{% block title %}C3{% endblock %}
+{% block head %}
+<!-- Load c3.css -->
+<link href="{% static 'AjProdMonitorApp/c3/c3.min.css' %}" rel="stylesheet" type="text/css"/>
+{% endblock %}
+{% block page-title %}C3{% endblock %}
+{% block main-content %}
+<div class="row">
+    <div class="col-lg-6 text-center">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div id='area-chart'></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 text-center">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div id='bar-chart'></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-6 text-center">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div id='pie-chart'></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 text-center">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div id='donut-chart'></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-6 text-center">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div id='gauge-chart'></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 text-center">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div id='step-chart'></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.row -->
+{% endblock %}
+{% block scripts %}
+<!-- Load d3.js and c3.js -->
+<script src="{% static 'AjProdMonitorApp/d3/d3.min.js' %}"></script>
+<script src="{% static 'AjProdMonitorApp/c3/c3.min.js' %}"></script>
+<script src="{% static 'AjProdMonitorApp/js/c3_samples.js' %}"></script>
+{% endblock %}

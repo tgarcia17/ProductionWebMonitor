@@ -1,0 +1,37 @@
+{% load i18n %}
+<form action="" method="" id="custom-report-form" accept-charset="utf-8">
+    {% csrf_token %}
+    <div class="row">
+            <div class="col-md-12">
+                <div id="report-alert" class="alert alert-success hidden">
+                </div>
+            </div>
+        </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="custom-report">{% trans "Custom Report" %}</label>
+                <input type="hidden" id="query-id" value="{{ query }}"/>
+                <select class="form-control" id="custom-report">
+                    <option disabled selected>{% trans "choose your report" %}</option>
+                    {% for custom_report in custom_report_list %}
+                        <option value="{{ custom_report.id}}" name="{{ custom_report.id}}">{{ custom_report.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-default" id="sync_custom_report" onclick="sync_user_custom_report()">{% trans "Load Report" %}</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <input type="hidden" id="custom-report-parent">
+                <label for="custom-report-name">{% trans "New report name" %}</label>
+                <input type="text" class="form-control" id="custom-report-name" placeholder="Define report name" required>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-default" id="save-report" onclick="create_custom_report()">{% trans "Save as new report" %}</button>
+            </div>
+        </div>
+    </div>
+</form>

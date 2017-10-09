@@ -1,0 +1,72 @@
+{% load i18n %}
+{% trans "Timeline" as the_timeline %}
+{% trans "Move a month backward" as month_back %}
+{% trans "Move a day backward" as day_back %}
+{% trans "Move a day forward" as day_for %}
+{% trans "Move a month forward" as month_for %}
+<div class = "main-template col-lg-12 panel-resizable" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div class="template" draggable="true" ondragstart="drag(event)" id = "kpi-daily-template">
+        <div class="card">
+            <div class="card-header dropdown" style="line-height:0px">
+                        <h3 class="panel-title dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-bar-chart-o"></i>
+                            {% trans "Daily KPIs" %}
+                        </h3>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                <li class="dropdown-submenu">
+                                    <a tabindex="-1" href="#">{% trans "Columns" %}</a>
+                                    <ul class="dropdown-menu-lg dropdown-menu">
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="0" class="toggle-vis-col" table-name="table-kpis-da">{% trans "Name" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="1" class="toggle-vis-col" table-name="table-kpis-da">{% trans "Day" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="2" class="toggle-vis-col" table-name="table-kpis-da">{% trans "Availability Yesterday" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="3" class="toggle-vis-col" table-name="table-kpis-da">{% trans "Availability Today" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="4" class="toggle-vis-col" table-name="table-kpis-da">{% trans "Performance Yesterday" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="5" class="toggle-vis-col" table-name="table-kpis-da">{% trans "Performance Today" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="6" class="toggle-vis-col" table-name="table-kpis-da">{% trans "OEE Yesterday" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="7" class="toggle-vis-col" table-name="table-kpis-da">{% trans "OEE Today" %}</label></li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <div class = "row row-time-line">
+                                <p>&nbsp &nbsp</p>
+                                <div id = "start-dt-kpi-daily" class = "card-start-date" style="line-height:15px"> </div>
+                                <p>&nbsp &nbsp</p>
+                                <div style="line-height:15px">-</div>
+                                <p>&nbsp &nbsp</p>
+                                <div id = "end-dt-kpi-daily" class = "card-end-date" style="line-height:15px"> </div>
+                                <p>&nbsp &nbsp &nbsp &nbsp</p>
+                                <div align="right" class = "content-time-line">
+                                  <input type = "hidden" class = "report" value = "KPI_DAILY">
+                                  <input type = "hidden" class = "function" value = "graficarKPIDaily">
+                                  <i class="fa fa-backward month-backward" aria-hidden="true" data-toggle="tooltip" title="{{ month_back }}"></i>
+                                  <i class="fa fa-chevron-left day-backward" aria-hidden="true" data-toggle="tooltip" title="{{ day_back }}"></i>
+                                  <span class="nav-link-text">{{ the_timeline }}</span>
+                                  <i class="fa fa-chevron-right day-forward" aria-hidden="true" data-toggle="tooltip" title="{{ day_for }}"></i>
+                                  <i class="fa fa-forward month-forward" aria-hidden="true" data-toggle="tooltip" title="{{ month_for }}"></i>
+                                </div>
+                            </div>
+
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="tbl-kpi-daily-h" class="table table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Name" %}</th>
+                                <th>{% trans "Day" %}</th>
+                                <th>{% trans "Availability Yesterday" %}</th>
+                                <th>{% trans "Availability Today" %}</th>
+                                <th>{% trans "Performance Yesterday" %}</th>
+                                <th>{% trans "Performance Today" %}</th>
+                                <th>{% trans "OEE Yesterday" %}</th>
+                                <th>{% trans "OEE Today" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody id = "tbl-kpi-daily">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

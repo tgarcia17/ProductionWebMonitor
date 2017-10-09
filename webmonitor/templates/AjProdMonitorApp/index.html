@@ -1,0 +1,155 @@
+{% extends 'AjProdMonitorApp/base.html' %} {% load staticfiles %} {% block title %}Dashboard{% endblock %} {% block head %}
+<link rel="stylesheet" href="{% static 'AjProdMonitorApp/font-awesome-4.7.0/css/font-awesome.min.css' %}" /> {% endblock %}
+{% block page-title %}Dashboard{% endblock %} {% block main-content %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="alert alert-success in fade">
+      <p class="blink_me"><strong>Success!</strong> You should <a href="#" class="alert-link">read this message</a>.</p>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="alert alert-info alert-dismissable">
+      Welcome <strong>{{user.username}}</strong><br/><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <i class="fa fa-info-circle"></i> <strong>New version!</strong> Try out <a href="http://www.ajover.com" class="alert-link">for all
+            users</a> try additional features!
+    </div>
+  </div>
+</div>
+<!--<div class="row">
+  <div class="col-md-2 col-sm-6 col-xs-12">
+    <div class="info-box">
+      <span class="info-box-icon bg-green"><i class="ion ion-ios-cart-outline"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">Sales</span>
+        <span class="info-box-number">760</span>
+      </div>
+    </div>
+  </div>
+</div>-->
+<div class="row">
+  <div class="col-xs-6 col-md-3">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-xs-3">
+            <i class="fa fa-building-o fa-4x"></i>
+          </div>
+          <div class="col-xs-9 text-right">
+            <div class="huge">{{ numberOfCompanies }}</div>
+            <div>Companies</div>
+          </div>
+        </div>
+      </div>
+      <!--<a href="#">
+        <div class="panel-footer">
+          <span class="pull-left">View Details</span>
+          <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+          <div class="clearfix"></div>
+        </div>
+      </a>-->
+    </div>
+  </div>
+  <div class="col-xs-6 col-md-2">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-xs-3">
+            <i class="fa fa-map-marker fa-4x"></i>
+          </div>
+          <div class="col-xs-9 text-right">
+            <div class="huge">{{ numberOfSites }}</div>
+            <div>Sites</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-6 col-md-2">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-xs-3">
+            <i class="fa fa-industry fa-4x"></i>
+          </div>
+          <div class="col-xs-9 text-right">
+            <div class="huge">{{ numberOfPlants }}</div>
+            <div>Plants</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-6 col-md-3">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-xs-3">
+            <i class="fa fa-cubes fa-4x"></i>
+          </div>
+          <div class="col-xs-9 text-right">
+            <div class="huge">{{ numberOfMachineGroups }}</div>
+            <div>Machine Groups</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-6 col-md-2">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-xs-3">
+            <i class="fa fa-cube fa-4x"></i>
+          </div>
+          <div class="col-xs-9 text-right">
+            <div class="huge">{{ numberOfMachines }}</div>
+            <div>Machines</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.row -->
+<div class="row">
+  <div class="col-lg-9 text-center">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Last incidents</h3>
+      </div>
+      <div class="panel-body">
+        demo demo
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-3">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Facilities</h3>
+      </div>
+      <div class="panel-body">
+
+        {% if latestPlants %}
+        <ul>
+          {% for plant in latestPlants %}
+          <li><a href="{% url 'detail' plant.plantId %}">{{plant.plantDescr}}</a></li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p>No facilities are available.</p>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /.row -->
+<div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <p><img src="/static/images/1491944236_alert.png" /></p>
+  </div>
+</div>
+<!-- /.row -->
+{% endblock %}

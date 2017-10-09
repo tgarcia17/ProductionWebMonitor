@@ -1,0 +1,16 @@
+Django==1.11.5
+django-pyodbc-azure==1.11.0.0
+django-python3-ldap==0.10.0
+djangorestframework==3.6.2
+get==0.0.21
+ldap3==2.2.3
+post==0.0.13
+public==0.0.38
+pyasn1==0.2.3
+Pygments==2.2.0
+pyodbc==4.0.17
+pytz==2017.2
+query-string==0.0.12
+request==0.0.13
+requests==2.13.0
+setupfiles==0.0.50

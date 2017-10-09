@@ -1,0 +1,72 @@
+{% load i18n %}
+{% trans "Timeline" as the_timeline %}
+{% trans "Move a month backward" as month_back %}
+{% trans "Move a day backward" as day_back %}
+{% trans "Move a day forward" as day_for %}
+{% trans "Move a month forward" as month_for %}
+<div class = "main-template col-lg-12 panel-resizable" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div class="template" draggable="true" ondragstart="drag(event)" id = "kpi-monthly-template">
+        <div class="card">
+            <div class="card-header dropdown" style="line-height:0px">
+                        <h3 class="panel-title dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-bar-chart-o"></i>
+                            {% trans "Monthly KPIs" %}
+                        </h3>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                <li class="dropdown-submenu">
+                                    <a tabindex="-1" href="#">{% trans "Columns" %}</a>
+                                    <ul class="dropdown-menu-lg dropdown-menu">
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="0" class="toggle-vis-col" table-name="table-kpis-mo">{% trans "Name" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="1" class="toggle-vis-col" table-name="table-kpis-mo">{% trans "Month" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="2" class="toggle-vis-col" table-name="table-kpis-mo">{% trans "Availability Last Manth" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="3" class="toggle-vis-col" table-name="table-kpis-mo">{% trans "Availability This Month" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="4" class="toggle-vis-col" table-name="table-kpis-mo">{% trans "Performance Last Month" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="5" class="toggle-vis-col" table-name="table-kpis-mo">{% trans "Performance This Month" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="6" class="toggle-vis-col" table-name="table-kpis-mo">{% trans "OEE Last Month" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="7" class="toggle-vis-col" table-name="table-kpis-mo">{% trans "OEE This Month" %}</label></li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <div class = "row row-time-line">
+                                <p>&nbsp &nbsp</p>
+                                <div id = "start-dt-kpi-monthly" class = "card-start-date" style="line-height:15px"> </div>
+                                <p>&nbsp &nbsp</p>
+                                <div style="line-height:15px">-</div>
+                                <p>&nbsp &nbsp</p>
+                                <div id = "end-dt-kpi-monthly" class = "card-end-date" style="line-height:15px"> </div>
+                                <p>&nbsp &nbsp &nbsp &nbsp</p>
+                                <div align="right" class = "content-time-line">
+                                  <input type = "hidden" class = "report" value = "KPI_MONTHL">
+                                  <input type = "hidden" class = "function" value = "graficarKPIMonthly">
+                                  <i class="fa fa-backward month-backward" aria-hidden="true" data-toggle="tooltip" title="{{ month_back }}"></i>
+                                  <i class="fa fa-chevron-left day-backward" aria-hidden="true" data-toggle="tooltip" title="{{ day_back }}"></i>
+                                  <span class="nav-link-text">{{ the_timeline }}</span>
+                                  <i class="fa fa-chevron-right day-forward" aria-hidden="true" data-toggle="tooltip" title="{{ day_for }}"></i>
+                                  <i class="fa fa-forward month-forward" aria-hidden="true" data-toggle="tooltip" title="{{ month_for }}"></i>
+                            </div>
+                            </div>
+
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="tbl-kpi-monthly-h" class="table table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Name" %}</th>
+                                <th>{% trans "Month" %}</th>
+                                <th>{% trans "Availability Last Month" %}</th>
+                                <th>{% trans "Availability This Month" %}</th>
+                                <th>{% trans "Performance Last Month" %}</th>
+                                <th>{% trans "Performance This Month" %}</th>
+                                <th>{% trans "OEE Last Month" %}</th>
+                                <th>{% trans "OEE This Month" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody id = "tbl-kpi-monthly">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

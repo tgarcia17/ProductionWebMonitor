@@ -1,0 +1,9 @@
+{% extends 'AjProdMonitorApp/base.html' %}
+{% block title %}
+Facility Monitoring
+{% endblock %}
+{% block main-content %}
+    {% if the_facility %}
+    <h2>Facility {{ the_facility.name }}</h2>
+    {% endif %}
+{% endblock %}

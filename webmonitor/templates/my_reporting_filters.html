@@ -1,0 +1,260 @@
+<form action="/webmonitor/reports/create-custom-report/" method="POST" id="custom-report-form" accept-charset="utf-8">
+    {% csrf_token %}
+    <div class="row">
+        <h3>Custom reports</h3>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="custom-report">Custom report</label>
+                <select class="form-control" id="custom-report">
+                    <option disabled selected>Choose your report</option>
+                    {% for custom_report in custom_report_list %}
+                    <option value="{{ custom_report.id}}">{{ custom_report.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-default" id="sync_custom_report" onclick="sync_user_custom_report()">Load report</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <input type="hidden" id="custom-report-parent">
+                <label for="custom-report-name">New report name</label>
+                <input type="text" class="form-control" id="custom-report-name" placeholder="Define report name" required>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-default" id="save-report" onclick="create_custom_report()">Save as new report</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <label for="startDttm">Start date:</label>
+            <input type="date" class="form-control" id="startDttm" name="startDttm" value="{{fromDate|date:"Y-m-d" }}">
+            <label for="start-num-days"># Days from now</label>
+            <input type="number" class="form-control" id="start-num-days" placeholder="# Days from now"/>
+        </div>
+        <div class="col-md-6">
+            <label for="endDttm">End date</label>
+            <input type="date" class="form-control" id="endDttm" name="endDttm" value="{{toDate|date:"Y-m-d" }}">
+            <label for="end-num-days"># Days from now</label>
+            <input type="number" class="form-control" id="end-num-days" placeholder="# Days from now"/>
+        </div>
+    </div>
+    <div class="row">
+        <h4>Custom filters</h4>
+        <div class="col-md-4">
+            <fieldset>
+                <legend>Company</legend>
+                {% for cUser in company_list %}
+                <div class="checkbox checkbox-info checkbox-circle">
+                    <input type="checkbox" id="company-{{ cUser.machine.machineGroup.plant.site.company.companyId}}"
+                           value="{{ cUser.machine.machineGroup.plant.site.company.companyId}}" name="cbx-company"/>
+                    <label for="company-{{ cUser.machine.machineGroup.plant.site.company.companyId}}">{{ cUser.machine.machineGroup.plant.site.company.companyDescr }}</label>
+                </div>
+                {% endfor %}
+            </fieldset>
+            <fieldset>
+                <legend>Site</legend>
+                <div id="site">
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-md-4">
+            <fieldset>
+                <legend>Plant</legend>
+                <div id="plant">
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Machine group</legend>
+                <div id="machine-group">
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-md-4">
+            <fieldset>
+                <legend>Machines</legend>
+                <div id="machine" name="machine">
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row" id="variables">
+        <select id="variable" multiple = "multiple">
+            <option name="variable" value="OEE" class="OEE">OEE</option>
+            <option name="variable" value="Availability" class="Availability">Availability</option>
+            <option name="variable" value="Performance" class="Performance">Performance</option>
+            <option name="variable" value="below_rate_count" class="below_rate_count">below_rate_count</option>
+            <option name="variable" value="part_pulse_masked" class="part_pulse_masked">part_pulse_masked</option>
+        </select>
+        <input type="checkbox" id="min">Min</input>
+        <input type="checkbox" id="max">Max</input>
+        <input type="checkbox" id="avg">Avg</input>
+        <input type="checkbox" id="trend">Trend</input>
+    </div>
+</form>
+<script>
+
+  var classAttribute;
+  $(document).ready(
+
+    function() {
+        var path = window.location.pathname;
+        var page = path.split("/");
+        $('#custom-report-parent').val(page[3]);
+        $('#variables').hide();
+        if (page[3] == 'variable-trend-rollup'){
+            $('#variables').show();
+        }
+        if (page[3] == 'dashboard'){
+            $('#variables').show();
+        }
+        $('.template').hide();
+        $('#end-num-days').change(function(e) {
+            $today = new Date();
+            $calculatedDate = new Date($today);
+            $calculatedDate.setDate($today.getDate() - $('#end-num-days').val());
+            var day = ("0" + $calculatedDate.getDate()).slice(-2);
+            var month = ("0" + ($calculatedDate.getMonth() + 1)).slice(-2);
+            var dateAux = $calculatedDate.getFullYear()+"-"+(month)+"-"+(day) ;
+            $('#endDttm').val(dateAux);
+        });
+
+        $('#start-num-days').change(function(e) {
+            $today = new Date();
+            $calculatedDate = new Date($today);
+            $calculatedDate.setDate($today.getDate() - $('#start-num-days').val());
+            var day = ("0" + $calculatedDate.getDate()).slice(-2);
+            var month = ("0" + ($calculatedDate.getMonth() + 1)).slice(-2);
+            var dateAux = $calculatedDate.getFullYear()+"-"+(month)+"-"+(day) ;
+            $('#startDttm').val(dateAux);
+        });
+
+      /* Company is selected */
+      $("input[name='cbx-company']").change(function() {
+        var parentClass = $(this).val();
+        if ($(this).is(':checked')) {
+          var company_id = $(this).val();
+          var url = "/webmonitor/filters/company/" + company_id + "/sites/";
+
+          $.getJSON(url, function(sites) {
+            var options = '';
+            for (var i = 0; i < sites.length; i++) {
+              options += '<div class="checkbox checkbox-info checkbox-circle" name="' + parentClass + '">';
+              options += '<input type="checkbox" id="site-' + sites[i].fields['siteId'] + '" value="' + sites[i].fields['siteId'] + '" name="cbx-site" class="' + company_id + '.' + sites[i].fields['siteId'] + '"/>';
+              options += '<label for="site-' + sites[i].fields['siteId'] + '" class = "' + company_id + '.' + sites[i].fields['siteId'] + '">' + sites[i].fields['siteDescr'] + '</label>';
+              options += '</div>';
+            }
+            $("#site").append(options);
+            //$("select#site option:first").attr('selected', 'selected');
+            //$("select#site").attr('disabled', false);
+          });
+        } else {
+          //console.log("remove sites " + parentClass);
+          $('div[name="' + parentClass + '"]').remove();
+        }
+      });
+
+      /* Site is selected */
+      $("#site").on("change", "input[type=checkbox]", function() {
+        var parentClass = $(this).attr("class");
+        if ($(this).is(':checked')) {
+          var site_id = $(this).val();
+          var index = parentClass.split(".");
+          var url = "/webmonitor/filters/site/" + index[0] + "/" + index[1] + "/plants/";
+          $.getJSON(url, function(plants) {
+            var options = '';
+            for (var i = 0; i < plants.length; i++) {
+              options += '<div class="checkbox checkbox-info checkbox-circle" name="' + parentClass + '">';
+              options += '<input type="checkbox" id="plant-' + plants[i].fields['plantId'] + '" value="' + plants[i].fields['plantId'] + '" name="cbx-plant" class="' + parentClass + '.' + plants[i].fields['plantId'] + '">';
+              options += '<label for="plant-' + plants[i].fields['plantId'] + '" class = "' + classAttribute + '.' + plants[i].fields['plantId'] + '">' + plants[i].fields['plantDescr'] + '</label>';
+              classAttribute = classAttribute + '.' + plants[i].fields['plantId'];
+              options += '</div>';
+            }
+            $("#plant").append(options);
+            //$("select#site option:first").attr('selected', 'selected');
+            //$("select#site").attr('disabled', false);
+          });
+        } else {
+          //console.log("remove plants " + parentClass);
+          $('div[name="' + parentClass + '"]').remove();
+        }
+      });
+
+      /* Plant is selected */
+      $("#plant").on("change", "input[type=checkbox]", function() {
+        var parentClass = $(this).attr("class");
+        //console.log("get machine groups " + parentClass);
+        if ($(this).is(':checked')) {
+          var plant_id = $(this).val();
+          var index = $(this).attr("class").split(".");
+          var url = "/webmonitor/filters/plant/" + index[0] + "/" + index[1] + "/" + index[2] + "/machine_groups/";
+
+          $.getJSON(url, function(machine_groups) {
+            var options = '';
+            for (var i = 0; i < machine_groups.length; i++) {
+              options += '<div class="checkbox checkbox-info checkbox-circle" name="' + parentClass + '">';
+              options += '<input type="checkbox" id="machine-group-' + machine_groups[i].fields['machineGroupId'] + '" value="' + machine_groups[i].fields['machineGroupId'] + '" name="cbx-machine-group" class="' + parentClass + '.' +
+                machine_groups[i].fields['machineGroupId'] + '">';
+              options += '<label for="machine-group-' + machine_groups[i].fields['machineGroupId'] + '" class = "' + classAttribute + '.' + machine_groups[i].fields['machineGroupId'] + '">' + machine_groups[i].fields['machineGroupDescr'] +
+                '</label>';
+              classAttribute = classAttribute + '.' + machine_groups[i].fields['machineGroupId'];
+              options += '</div>';
+            }
+            $("#machine-group").append(options);
+            //$("select#plant option:first").attr('selected', 'selected');
+            //$("select#plant").attr('disabled', false);
+          });
+        } else {
+          //console.log("remove machine groups " + parentClass);
+          $('div[name="' + parentClass + '"]').remove();
+        }
+      });
+
+      /* machine group is selected */
+      $("#machine-group").on("change", "input[type=checkbox]", function() {
+        var parentClass = $(this).attr("class");
+        if ($(this).is(':checked')) {
+          var machine_group_id = $(this).val();
+          var index = $(this).attr("class").split(".");
+          var url = "/webmonitor/filters/machine-group/" + index[0] + "/" + index[1] + "/" + index[2] + "/" + index[3] + "/machines/";
+
+          $.getJSON(url, function(machines) {
+            var options = '';
+            for (var i = 0; i < machines.length; i++) {
+              options += '<div class="checkbox checkbox-info checkbox-circle ' + machine_group_id + '" name="' + parentClass + '">';
+              options += '<input type="checkbox" name = "machine" id="machine-' + machines[i]['machineId'] + '" value="' + machines[i]['machineId'] + '" name="cbx-machine" class="' + parentClass + '.' + machines[i]['machineId'] + '">';
+              options += '<label for="machine-' + machines[i]['machineId'] + '" class = "' + classAttribute + '.' + machines[i]['machineId'] + '">' + machines[i]['machineDescr'] + '</label>';
+
+              options += '</div>';
+            }
+            $("#machine").append(options);
+            //$("select#machine option:first").attr('selected', 'selected');
+            //$("select#machine").attr('disabled', false);
+          });
+        } else {
+          //console.log("remove machine  " + parentClass);
+          $('div[name="' + parentClass + '"]').remove();
+        }
+      });
+
+      /* machine selected */
+      $("#machine").on("change", "input[type=checkbox]", function() {
+        //console.log($(this).val() + " › " + $(this).is(':checked'));
+        if ($(this).is(':checked')) {
+          //console.log("Get report for: " + $(this).val());
+        } else {
+
+        }
+      });
+    });
+
+    /*
+    $(function () {
+        $('#variable').multiselect({
+            includeSelectAllOption: true
+        });
+    });*/
+
+</script>

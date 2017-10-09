@@ -1,0 +1,76 @@
+{% load i18n %}
+{% trans "Timeline" as the_timeline %}
+{% trans "Move a month backward" as month_back %}
+{% trans "Move a day backward" as day_back %}
+{% trans "Move a day forward" as day_for %}
+{% trans "Move a month forward" as month_for %}
+<div class = "main-template col-lg-12 panel-resizable" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div class="template" draggable="true" ondragstart="drag(event)" id = "downtime-reasons-template">
+        <div class="card">
+                    <div class="card-header dropdown" style="line-height:0px">
+                        <h3 class="panel-title dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-bar-chart-o"></i>
+                            {% trans "Downtime Reasons Pareto" %}
+                        </h3>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                            <li class="mixwidget-table-hide"><a tabindex="-1">{% trans "Hide Table" %}</a></li>
+                            <li class="mixwidget-canvas-hide"><a tabindex="-1">{% trans "Hide Chart" %}</a></li>
+                            <li class="mixwidget-show"><a tabindex="-1">{% trans "Show Both" %}</a></li>
+                            <li class="dropdown-submenu">
+                                <a tabindex="-1" href="#">{% trans "Columns" %}</a>
+                                <ul class="dropdown-menu">
+                                    <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="0" class="toggle-vis-col" table-name="table-downtime">{% trans "Name" %}</label></li>
+                                    <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="1" class="toggle-vis-col" table-name="table-downtime">{% trans "Ocurrences" %}</label></li>
+                                    <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="2" class="toggle-vis-col" table-name="table-downtime">{% trans "Duration" %}</label></li>
+                                    <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="3" class="toggle-vis-col" table-name="table-downtime">{% trans "Avg. Ocurrence" %}</label></li>
+                                    <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="4" class="toggle-vis-col" table-name="table-downtime">{% trans "Percentage" %}</label></li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <div class = "row row-time-line">
+                            <p>&nbsp &nbsp</p>
+                            <div id = "start-dt-downtime-reasons" class = "card-start-date" style="line-height:15px"> </div>
+                            <p>&nbsp &nbsp</p>
+                            <div style="line-height:15px">-</div>
+                            <p>&nbsp &nbsp</p>
+                            <div id = "end-dt-downtime-reasons" class = "card-end-date" style="line-height:15px"> </div>
+                            <p>&nbsp &nbsp &nbsp &nbsp</p>
+                            <div align="right" class = "content-time-line">
+                              <input type = "hidden" class = "report" value = "DOWNTIME_R">
+                              <input type = "hidden" class = "function" value = "graficarDownTimeReasons">
+                              <i class="fa fa-backward month-backward" aria-hidden="true" data-toggle="tooltip" title="{{ month_back }}"></i>
+                              <i class="fa fa-chevron-left day-backward" aria-hidden="true" data-toggle="tooltip" title="{{ day_back }}"></i>
+                              <span class="nav-link-text">{{ the_timeline }}</span>
+                              <i class="fa fa-chevron-right day-forward" aria-hidden="true" data-toggle="tooltip" title="{{ day_for }}"></i>
+                              <i class="fa fa-forward month-forward" aria-hidden="true" data-toggle="tooltip" title="{{ month_for }}"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="mixwidget-canvas col-lg-5">
+                                <canvas id="chartjs_bar" class="img-responsive"></canvas>
+                            </div>
+                            <div class="mixwidget-table col-lg-7">
+                                <div class="table-responsive">
+                                    <table id="tbl-dtr" class="table table-bordered" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>{% trans "Name" %}</th>
+                                                <th>{% trans "Ocurrences" %}</th>
+                                                <th>{% trans "Duration" %}</th>
+                                                <th>{% trans "Avg. Ocurrence" %}</th>
+                                                <th>{% trans "Percentage" %}</th>
+                                            </tr>
+                                        </thead>
+                                         <tbody id="tbl-body">
+                                         </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+    </div>
+</div>

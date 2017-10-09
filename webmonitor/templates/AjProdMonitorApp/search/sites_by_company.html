@@ -1,0 +1,18 @@
+{% extends 'AjProdMonitorApp/base.html' %}
+
+{% block main-content %}
+
+{% load company_site_select %}
+
+<form method="get">
+    {{ filter.form.as_p }}
+    <button type="submit">Search</button>
+</form>
+
+<h4>Facilities</h4>
+<div class="btn-group" role="group" aria-label="...">
+    {% for site in filter.qs %}
+    <button type="button" class="btn btn-default" value="{{ site.siteId }}">{{ site.siteDescr }}</button>
+    {% endfor %}
+</div>
+{% endblock %}

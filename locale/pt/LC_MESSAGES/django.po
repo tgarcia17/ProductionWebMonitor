@@ -1,0 +1,599 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-04 17:12-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .\ProductionWebMonitor\settings.py:128
+msgid "Spanish"
+msgstr "Espanhol"
+
+#: .\ProductionWebMonitor\settings.py:129
+msgid "English"
+msgstr "Inglês"
+
+#: .\ProductionWebMonitor\settings.py:130
+msgid "Portuguese"
+msgstr "Português"
+
+#: .\startbootstrap\templates\base.html:14
+#: .\webmonitor\templates\baselp.html:10
+#: .\webmonitor\templates\registration\login.html:21
+msgid "Ajover production monitor"
+msgstr "Sistema de Monitoramento de Produção"
+
+#: .\startbootstrap\templates\base.html:15
+#: .\startbootstrap\templates\index.html:2
+#: .\startbootstrap\templates\widget_main.html:2
+msgid "Home"
+msgstr "Home"
+
+#: .\startbootstrap\templates\base.html:16
+msgid "Dashboard"
+msgstr "Painel de controle"
+
+#: .\startbootstrap\templates\base.html:17
+msgid "Tree View"
+msgstr "Árvore de máquinas"
+
+#: .\startbootstrap\templates\base.html:18
+msgid "Administration"
+msgstr "Administração"
+
+#: .\startbootstrap\templates\base.html:19
+msgid "Logout"
+msgstr "Sair"
+
+#: .\startbootstrap\templates\base.html:20
+#: .\startbootstrap\templates\widgets\downtime_reasons_template.html:2
+#: .\startbootstrap\templates\widgets\job_oee_scatter_template.html:2
+#: .\startbootstrap\templates\widgets\job_summary_template.html:2
+#: .\startbootstrap\templates\widgets\kpi_daily_template.html:2
+#: .\startbootstrap\templates\widgets\kpi_monthly_template.html:2
+#: .\startbootstrap\templates\widgets\kpi_weekly_template.html:2
+#: .\startbootstrap\templates\widgets\machine_status_chronological_template.html:2
+#: .\startbootstrap\templates\widgets\machine_status_template.html:2
+#: .\startbootstrap\templates\widgets\machine_variable_status_template.html:2
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:2
+#: .\startbootstrap\templates\widgets\production_summary_template.html:2
+#: .\startbootstrap\templates\widgets\status_rollup_template.html:2
+#: .\startbootstrap\templates\widgets\variable_gauge_template.html:2
+#: .\startbootstrap\templates\widgets\variable_trend_rollup_template.html:2
+msgid "Timeline"
+msgstr "Linha de Tempo"
+
+#: .\startbootstrap\templates\base.html:21
+#: .\startbootstrap\templates\widgets\downtime_reasons_template.html:3
+#: .\startbootstrap\templates\widgets\job_oee_scatter_template.html:3
+#: .\startbootstrap\templates\widgets\job_summary_template.html:3
+#: .\startbootstrap\templates\widgets\kpi_daily_template.html:3
+#: .\startbootstrap\templates\widgets\kpi_monthly_template.html:3
+#: .\startbootstrap\templates\widgets\kpi_weekly_template.html:3
+#: .\startbootstrap\templates\widgets\machine_status_chronological_template.html:3
+#: .\startbootstrap\templates\widgets\machine_status_template.html:3
+#: .\startbootstrap\templates\widgets\machine_variable_status_template.html:3
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:3
+#: .\startbootstrap\templates\widgets\production_summary_template.html:3
+#: .\startbootstrap\templates\widgets\status_rollup_template.html:3
+#: .\startbootstrap\templates\widgets\variable_gauge_template.html:3
+#: .\startbootstrap\templates\widgets\variable_trend_rollup_template.html:3
+msgid "Move a month backward"
+msgstr "Mover um mês para trás"
+
+#: .\startbootstrap\templates\base.html:22
+#: .\startbootstrap\templates\widgets\downtime_reasons_template.html:4
+#: .\startbootstrap\templates\widgets\job_oee_scatter_template.html:4
+#: .\startbootstrap\templates\widgets\job_summary_template.html:4
+#: .\startbootstrap\templates\widgets\kpi_daily_template.html:4
+#: .\startbootstrap\templates\widgets\kpi_monthly_template.html:4
+#: .\startbootstrap\templates\widgets\kpi_weekly_template.html:4
+#: .\startbootstrap\templates\widgets\machine_status_chronological_template.html:4
+#: .\startbootstrap\templates\widgets\machine_status_template.html:4
+#: .\startbootstrap\templates\widgets\machine_variable_status_template.html:4
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:4
+#: .\startbootstrap\templates\widgets\production_summary_template.html:4
+#: .\startbootstrap\templates\widgets\status_rollup_template.html:4
+#: .\startbootstrap\templates\widgets\variable_gauge_template.html:4
+#: .\startbootstrap\templates\widgets\variable_trend_rollup_template.html:4
+msgid "Move a day backward"
+msgstr "Mova um dia para trás"
+
+#: .\startbootstrap\templates\base.html:23
+#: .\startbootstrap\templates\widgets\downtime_reasons_template.html:5
+#: .\startbootstrap\templates\widgets\job_oee_scatter_template.html:5
+#: .\startbootstrap\templates\widgets\job_summary_template.html:5
+#: .\startbootstrap\templates\widgets\kpi_daily_template.html:5
+#: .\startbootstrap\templates\widgets\kpi_monthly_template.html:5
+#: .\startbootstrap\templates\widgets\kpi_weekly_template.html:5
+#: .\startbootstrap\templates\widgets\machine_status_chronological_template.html:5
+#: .\startbootstrap\templates\widgets\machine_status_template.html:5
+#: .\startbootstrap\templates\widgets\machine_variable_status_template.html:5
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:5
+#: .\startbootstrap\templates\widgets\production_summary_template.html:5
+#: .\startbootstrap\templates\widgets\status_rollup_template.html:5
+#: .\startbootstrap\templates\widgets\variable_gauge_template.html:5
+#: .\startbootstrap\templates\widgets\variable_trend_rollup_template.html:5
+msgid "Move a day forward"
+msgstr "Mova um dia para a frente"
+
+#: .\startbootstrap\templates\base.html:24
+#: .\startbootstrap\templates\widgets\downtime_reasons_template.html:6
+#: .\startbootstrap\templates\widgets\job_oee_scatter_template.html:6
+#: .\startbootstrap\templates\widgets\job_summary_template.html:6
+#: .\startbootstrap\templates\widgets\kpi_daily_template.html:6
+#: .\startbootstrap\templates\widgets\kpi_monthly_template.html:6
+#: .\startbootstrap\templates\widgets\kpi_weekly_template.html:6
+#: .\startbootstrap\templates\widgets\machine_status_chronological_template.html:6
+#: .\startbootstrap\templates\widgets\machine_status_template.html:6
+#: .\startbootstrap\templates\widgets\machine_variable_status_template.html:6
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:6
+#: .\startbootstrap\templates\widgets\production_summary_template.html:6
+#: .\startbootstrap\templates\widgets\status_rollup_template.html:6
+#: .\startbootstrap\templates\widgets\variable_gauge_template.html:6
+#: .\startbootstrap\templates\widgets\variable_trend_rollup_template.html:6
+msgid "Move a month forward"
+msgstr "Mova um mês para a frente"
+
+#: .\startbootstrap\templates\base.html:25
+msgid "Widget Selection"
+msgstr "Seleção de Widgets"
+
+#: .\startbootstrap\templates\base.html:26
+msgid "Calendar Selection"
+msgstr "Seleção de datas"
+
+#: .\startbootstrap\templates\base.html:27
+msgid "Machine Selection"
+msgstr "Seleção de máquina"
+
+#: .\startbootstrap\templates\base.html:28
+msgid "Favorites Selection"
+msgstr "Seleção de Favoritos"
+
+#: .\startbootstrap\templates\base.html:29
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: .\startbootstrap\templates\base.html:30
+msgid "OK"
+msgstr "OK"
+
+#: .\startbootstrap\templates\base.html:284
+msgid "Ready to Leave?"
+msgstr "Pronto para partir?"
+
+#: .\startbootstrap\templates\base.html:290
+msgid "Select Logout below if you are ready to end your current session."
+msgstr "Selecione Sair abaixo se você estiver pronto para terminar sua sessão atual."
+
+#: .\startbootstrap\templates\calendar_template.html:4
+msgid "# Days from now"
+msgstr "# Dias a partir de agora"
+
+#: .\startbootstrap\templates\calendar_template.html:7
+msgid "Start Date:"
+msgstr "Data de início:"
+
+#: .\startbootstrap\templates\calendar_template.html:9
+msgid "Start Time:"
+msgstr "Hora de início:"
+
+#: .\startbootstrap\templates\calendar_template.html:16
+msgid "End Date:"
+msgstr "Data final:"
+
+#: .\startbootstrap\templates\calendar_template.html:18
+msgid "End Time:"
+msgstr "Hora do fim:"
+
+#: .\startbootstrap\templates\calendar_template.html:28
+msgid "Today"
+msgstr "Hoje"
+
+#: .\startbootstrap\templates\calendar_template.html:29
+msgid "Last Week"
+msgstr "Semana passada"
+
+#: .\startbootstrap\templates\calendar_template.html:30
+msgid "This week"
+msgstr "Esta semana"
+
+#: .\startbootstrap\templates\calendar_template.html:31
+msgid "Last Month"
+msgstr "Mês passado"
+
+#: .\startbootstrap\templates\calendar_template.html:32
+msgid "This Month"
+msgstr "Este mês"
+
+#: .\startbootstrap\templates\calendar_template.html:39
+msgid "Hour"
+msgstr "Hora"
+
+#: .\startbootstrap\templates\calendar_template.html:40
+#: .\startbootstrap\templates\widgets\kpi_daily_template.html:41
+msgid "Day"
+msgstr "Dia"
+
+#: .\startbootstrap\templates\calendar_template.html:41
+#: .\startbootstrap\templates\widgets\kpi_weekly_template.html:42
+msgid "Week"
+msgstr "Semana"
+
+#: .\startbootstrap\templates\calendar_template.html:42
+#: .\startbootstrap\templates\widgets\kpi_monthly_template.html:41
+msgid "Month"
+msgstr "Mês"
+
+#: .\startbootstrap\templates\favorites_selection_template.html:13
+msgid "Custom Report"
+msgstr "Favorito personalizado"
+
+#: .\startbootstrap\templates\favorites_selection_template.html:16
+msgid "escolha o seu favorito"
+msgstr ""
+
+#: .\startbootstrap\templates\favorites_selection_template.html:23
+msgid "Load Report"
+msgstr "Carregar favorito"
+
+#: .\startbootstrap\templates\favorites_selection_template.html:29
+msgid "New report name"
+msgstr "Novo nome do relatório"
+
+#: .\startbootstrap\templates\favorites_selection_template.html:33
+msgid "Save as new report"
+msgstr "Salvar como novo relatório"
+
+#: .\startbootstrap\templates\machines_selection_template.html:7
+msgid "Company"
+msgstr "Empresa"
+
+#: .\startbootstrap\templates\machines_selection_template.html:19
+msgid "Site"
+msgstr "Local"
+
+#: .\startbootstrap\templates\machines_selection_template.html:26
+#: .\startbootstrap\templates\widgets\machine_variable_status_template.html:40
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:59
+msgid "Plant"
+msgstr "Fabrica"
+
+#: .\startbootstrap\templates\machines_selection_template.html:35
+msgid "Machine Group"
+msgstr "Grupo de máquinas"
+
+#: .\startbootstrap\templates\machines_selection_template.html:42
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:42
+msgid "Machines"
+msgstr "Máquinas"
+
+#: .\startbootstrap\templates\widget_selection_template.html:25
+msgid "Variables"
+msgstr "Variáveis"
+
+#: .\startbootstrap\templates\widget_selection_template.html:42
+msgid "Min"
+msgstr "Min"
+
+#: .\startbootstrap\templates\widget_selection_template.html:43
+msgid "Max"
+msgstr "Max"
+
+#: .\startbootstrap\templates\widget_selection_template.html:44
+msgid "Avg"
+msgstr "Média"
+
+#: .\startbootstrap\templates\widget_selection_template.html:45
+msgid "Trend"
+msgstr "Tendência"
+
+#: .\startbootstrap\templates\widget_selection_template.html:53
+msgid "Widget Size"
+msgstr "Tamanho do Widget"
+
+#: .\startbootstrap\templates\widget_selection_template.html:55
+msgid "Large"
+msgstr "Grande"
+
+#: .\startbootstrap\templates\widget_selection_template.html:56
+msgid "Medium"
+msgstr "Médio"
+
+#: .\startbootstrap\templates\widget_selection_template.html:57
+msgid "Small"
+msgstr "Pequeno"
+
+#: .\startbootstrap\templates\widget_selection_template.html:61
+msgid "Monitor Mode"
+msgstr "Modo Monitor"
+
+#: .\startbootstrap\templates\widgets\downtime_reasons_template.html:12
+msgid "Downtime Reasons Pareto"
+msgstr "Razões Inatividade Pareto"
+
+#: .\startbootstrap\templates\widgets\downtime_reasons_template.html:15
+#: .\startbootstrap\templates\widgets\production_summary_template.html:15
+#: .\startbootstrap\templates\widgets\status_rollup_template.html:15
+msgid "Hide Table"
+msgstr "Ocultar tabela"
+
+#: .\startbootstrap\templates\widgets\downtime_reasons_template.html:16
+#: .\startbootstrap\templates\widgets\production_summary_template.html:16
+#: .\startbootstrap\templates\widgets\status_rollup_template.html:16
+msgid "Hide Chart"
+msgstr "Ocultar gráfico"
+
+#: .\startbootstrap\templates\widgets\downtime_reasons_template.html:17
+#: .\startbootstrap\templates\widgets\production_summary_template.html:17
+#: .\startbootstrap\templates\widgets\status_rollup_template.html:17
+msgid "Show Both"
+msgstr "Mostre tudo"
+
+#: .\startbootstrap\templates\widgets\downtime_reasons_template.html:49
+#: .\startbootstrap\templates\widgets\job_summary_template.html:40
+#: .\startbootstrap\templates\widgets\kpi_daily_template.html:40
+#: .\startbootstrap\templates\widgets\kpi_monthly_template.html:40
+#: .\startbootstrap\templates\widgets\kpi_weekly_template.html:41
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:41
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:60
+msgid "Name"
+msgstr "Nome"
+
+#: .\startbootstrap\templates\widgets\downtime_reasons_template.html:50
+msgid "Ocurrences"
+msgstr "Ocorrências"
+
+#: .\startbootstrap\templates\widgets\downtime_reasons_template.html:51
+#: .\startbootstrap\templates\widgets\status_rollup_template.html:51
+msgid "Duration"
+msgstr "Duração"
+
+#: .\startbootstrap\templates\widgets\downtime_reasons_template.html:52
+msgid "Avg. Ocurrence"
+msgstr "média de ocorrência"
+
+#: .\startbootstrap\templates\widgets\downtime_reasons_template.html:53
+#: .\startbootstrap\templates\widgets\status_rollup_template.html:52
+msgid "Percentage"
+msgstr "Percentagem"
+
+#: .\startbootstrap\templates\widgets\job_oee_scatter_template.html:12
+msgid "Job OEE Scatter"
+msgstr "Job OEE Scatter"
+
+#: .\startbootstrap\templates\widgets\job_summary_template.html:12
+msgid "Job Summary Table"
+msgstr "Tabela de Resumo do Trabalho"
+
+#: .\startbootstrap\templates\widgets\job_summary_template.html:41
+msgid "Job"
+msgstr "Trabalho"
+
+#: .\startbootstrap\templates\widgets\job_summary_template.html:42
+msgid "Description"
+msgstr "Descrição"
+
+#: .\startbootstrap\templates\widgets\job_summary_template.html:43
+msgid "Article"
+msgstr "Artigo"
+
+#: .\startbootstrap\templates\widgets\job_summary_template.html:44
+msgid "Start"
+msgstr "Começar"
+
+#: .\startbootstrap\templates\widgets\job_summary_template.html:45
+msgid "End"
+msgstr "Fim"
+
+#: .\startbootstrap\templates\widgets\job_summary_template.html:47
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:43
+msgid "Availability"
+msgstr "Disponibilidade"
+
+#: .\startbootstrap\templates\widgets\job_summary_template.html:48
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:44
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:62
+msgid "Performance"
+msgstr "Performance"
+
+#: .\startbootstrap\templates\widgets\job_summary_template.html:49
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:45
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:63
+msgid "OEE"
+msgstr "OEE"
+
+#: .\startbootstrap\templates\widgets\job_summary_template.html:50
+msgid "Expected"
+msgstr "Esperado"
+
+#: .\startbootstrap\templates\widgets\job_summary_template.html:51
+msgid "Actual"
+msgstr "Real"
+
+#: .\startbootstrap\templates\widgets\kpi_daily_template.html:12
+msgid "Daily KPIs"
+msgstr "KPIs diários"
+
+#: .\startbootstrap\templates\widgets\kpi_daily_template.html:42
+msgid "Availability Yesterday"
+msgstr "Disponibilidade Ontem"
+
+#: .\startbootstrap\templates\widgets\kpi_daily_template.html:43
+msgid "Availability Today"
+msgstr "Disponibilidade Hoje"
+
+#: .\startbootstrap\templates\widgets\kpi_daily_template.html:44
+msgid "Performance Yesterday"
+msgstr "Performance Ontem"
+
+#: .\startbootstrap\templates\widgets\kpi_daily_template.html:45
+msgid "Performance Today"
+msgstr "Performance Hoje"
+
+#: .\startbootstrap\templates\widgets\kpi_daily_template.html:46
+msgid "OEE Yesterday"
+msgstr "OEE Ontem"
+
+#: .\startbootstrap\templates\widgets\kpi_daily_template.html:47
+msgid "OEE Today"
+msgstr "OEE Hoje"
+
+#: .\startbootstrap\templates\widgets\kpi_monthly_template.html:12
+msgid "Monthly KPIs"
+msgstr "KPIs Mensais"
+
+#: .\startbootstrap\templates\widgets\kpi_monthly_template.html:42
+msgid "Availability Last Month"
+msgstr "Disponibilidade Mês Passado"
+
+#: .\startbootstrap\templates\widgets\kpi_monthly_template.html:43
+msgid "Availability This Month"
+msgstr "Disponibilidade Mês Atual"
+
+#: .\startbootstrap\templates\widgets\kpi_monthly_template.html:44
+msgid "Performance Last Month"
+msgstr "Performance Mês Passado"
+
+#: .\startbootstrap\templates\widgets\kpi_monthly_template.html:45
+msgid "Performance This Month"
+msgstr "Performance Mês Atual"
+
+#: .\startbootstrap\templates\widgets\kpi_monthly_template.html:46
+msgid "OEE Last Month"
+msgstr "OEE Mês Passado"
+
+#: .\startbootstrap\templates\widgets\kpi_monthly_template.html:47
+msgid "OEE This Month"
+msgstr "OEE Mês Atual"
+
+#: .\startbootstrap\templates\widgets\kpi_weekly_template.html:12
+msgid "Weekly KPIs"
+msgstr "KPIs semanais"
+
+#: .\startbootstrap\templates\widgets\kpi_weekly_template.html:43
+msgid "Availability Last Week"
+msgstr "Disponibilidade Semana passada"
+
+#: .\startbootstrap\templates\widgets\kpi_weekly_template.html:44
+msgid "Availability This Week"
+msgstr "Disponibilidade Semana atual"
+
+#: .\startbootstrap\templates\widgets\kpi_weekly_template.html:45
+msgid "Performance Last Week"
+msgstr "Performance Semana passada"
+
+#: .\startbootstrap\templates\widgets\kpi_weekly_template.html:46
+msgid "Performance This Week"
+msgstr "Performance Semana atual"
+
+#: .\startbootstrap\templates\widgets\kpi_weekly_template.html:47
+msgid "OEE Last Week"
+msgstr "OEE Semana passada"
+
+#: .\startbootstrap\templates\widgets\kpi_weekly_template.html:48
+msgid "OEE This Week"
+msgstr "OEE Semana atual"
+
+#: .\startbootstrap\templates\widgets\machine_status_chronological_template.html:12
+msgid "Machine Status Chronological"
+msgstr "Cronológica status da máquina"
+
+#: .\startbootstrap\templates\widgets\machine_status_template.html:12
+msgid "Machine Status"
+msgstr "Status da máquina"
+
+#: .\startbootstrap\templates\widgets\machine_variable_status_template.html:12
+msgid "Machine Variable Status"
+msgstr "Status da variável da máquina"
+
+#: .\startbootstrap\templates\widgets\machine_variable_status_template.html:41
+msgid "Machine"
+msgstr "Máquina"
+
+#: .\startbootstrap\templates\widgets\machine_variable_status_template.html:42
+msgid "Variable"
+msgstr "Variável"
+
+#: .\startbootstrap\templates\widgets\machine_variable_status_template.html:43
+msgid "Value"
+msgstr "Valor"
+
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:12
+msgid "Production Rollup"
+msgstr "Resumo da Produção"
+
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:35
+msgid "Area Production Rollup"
+msgstr "Resumo da Produção por área"
+
+#: .\startbootstrap\templates\widgets\production_rollup_template.html:53
+msgid "Machine Production Rollup"
+msgstr "Resumo da produção por máquina"
+
+#: .\startbootstrap\templates\widgets\production_summary_template.html:12
+msgid "Production Summary"
+msgstr "Resumo da Produção por turno"
+
+#: .\startbootstrap\templates\widgets\status_rollup_template.html:12
+msgid "Status Rollup"
+msgstr "Resumo do status da máquina"
+
+#: .\startbootstrap\templates\widgets\status_rollup_template.html:50
+msgid "Status"
+msgstr "Estado"
+
+#: .\startbootstrap\templates\widgets\variable_gauge_template.html:12
+msgid "Variable Gauge"
+msgstr "Gauge variável"
+
+#: .\startbootstrap\templates\widgets\variable_gauge_template.html:15
+msgid "Tight Fit"
+msgstr "Tight Fit"
+
+#: .\startbootstrap\templates\widgets\variable_gauge_template.html:16
+msgid "Loose Fit"
+msgstr "Loop Fit"
+
+#: .\startbootstrap\templates\widgets\variable_gauge_template.html:17
+msgid "Full Fit"
+msgstr "Full Fit"
+
+#: .\startbootstrap\templates\widgets\variable_trend_rollup_template.html:13
+msgid "Variable Trend"
+msgstr "Tendência Variável"
+
+#: .\webmonitor\templates\registration\login.html:12
+msgid "Your username and password didn't match. Please try again."
+msgstr "Seu nome de usuário e senha não corresponderam. Por favor, tente novamente."
+
+#: .\webmonitor\templates\registration\login.html:16
+msgid ""
+"Your account doesn't have access to this page. Please contact to the "
+"administrator."
+msgstr "Sua conta não tem acesso a esta página. Entre em contato com o administrador."
+
+#: .\webmonitor\templates\registration\login.html:18
+msgid "Please login to see this page."
+msgstr "Faça o login para ver esta página."
+
+#: .\webmonitor\templates\registration\login.html:35
+msgid "Login"
+msgstr "Entrar"
+
+#: .\webmonitor\templates\registration\login.html:36
+msgid "Enter your domain username and password:"
+msgstr "Digite seu nome de usuário e senha do domínio:"

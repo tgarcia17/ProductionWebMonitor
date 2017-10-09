@@ -1,0 +1,135 @@
+<form action="" method="get" accept-charset="utf-8">
+  <select name="company" id="company">
+        <option value="Z">Select a company</option>
+        {% for company in company_list %}
+        <option value="{{ company.companyId}}" class = "{{ company.companyId}}">{{ company.companyDescr }}</option>
+        {% endfor %}
+  </select>
+  <select name="site" id="site" disabled="true">
+        <option value="Z">Select a site</option>
+  </select>
+  <select name="plant" id="plant" disabled="true">
+        <option value="Z">Select a plant</option>
+  </select>
+  <select name="machine-group" id="machine-group" disabled="true">
+        <option value="Z">Select a machine group</option>
+  </select>
+  <select name="machine" id="machine" disabled="true">
+        <option value="Z">Select a machine</option>
+  </select>
+  Fecha Inicio: <input id="startDttm" type="date"/>
+  Fecha Fin: <input id="endDttm" type="date"/>
+</form>
+<script>
+var classAttribute;
+  $(document).ready(
+    function() {
+      $("select#company").change(function() {
+        if ($(this).val() == 'Z') {
+          $("select#site").html("<option>Select a site</option>");
+          $("select#site").attr('disabled', true);
+        } else {
+          var company_id = $(this).val();
+          var url = "/webmonitor/filters/company/" + company_id + "/sites/";
+
+          $.getJSON(url, function(sites) {
+
+            /*$.each(sites, function(i, site) {
+              $('select#site').append($('<option>', {
+                value: site.fields['siteId'] ,
+                text: site.fields['siteDescr']
+              }));
+            });
+            $("select#site").attr('disabled', false);*/
+
+            var options = '<option value="Z">Select a site</option>';
+            for (var i = 0; i < sites.length; i++) {
+              options += '<option value="' + sites[i].fields['siteId'] + '" class = "' + company_id + '.' + sites[i].fields['siteId'] + '">' + sites[i].fields['siteDescr'] + '</option>';
+              classAttribute = company_id + '.' + sites[i].fields['siteId'];
+            }
+            $("select#site").html(options);
+            $("select#site option:first").attr('selected', 'selected');
+            $("select#site").attr('disabled', false);
+          });
+        }
+      });
+
+      $("select#site").change(function() {
+        if ($(this).val() == 'Z') {
+          $("select#plant").html("<option>Select a plant</option>");
+          $("select#plant").attr('disabled', true);
+        } else {
+          var site_id = $(this).val();
+          var url = "/webmonitor/filters/site/" + site_id + "/plants/";
+
+          $.getJSON(url, function(plants) {
+            var options = '<option value="Z">Select a site</option>';
+            for (var i = 0; i < plants.length; i++) {
+            options += '<option value="' + plants[i].fields['plantId'] + '" class = "' + classAttribute + '.' + plants[i].fields['plantId'] + '">' + plants[i].fields['plantDescr'] + '</option>';
+            classAttribute = classAttribute + '.' + plants[i].fields['plantId'];
+              /*options += '<option value="' + plants[i].fields['plantId'] + '">' + plants[i].fields['plantDescr'] + '</option>';*/
+            }
+            $("select#plant").html(options);
+            $("select#plant option:first").attr('selected', 'selected');
+            $("select#plant").attr('disabled', false);
+          });
+        }
+      });
+
+      $("select#plant").change(function() {
+        if ($(this).val() == 'Z') {
+          $("select#machine-group").html("<option>Select a machien group</option>");
+          $("select#machine-group").attr('disabled', true);
+        } else {
+          var machine_group_id = $(this).val();
+          var url = "/webmonitor/filters/plant/" + machine_group_id + "/machine_groups/";
+
+          $.getJSON(url, function(machine_groups) {
+            var options = '<option value="Z">Select a plant</option>';
+            for (var i = 0; i < machine_groups.length; i++) {
+              options += '<option value="' + machine_groups[i].fields['machineGroupId'] + '" class = "' + classAttribute + '.' + machine_groups[i].fields['machineGroupId'] + '">' + machine_groups[i].fields['machineGroupDescr'] + '</option>';
+              classAttribute = classAttribute + '.' + machine_groups[i].fields['machineGroupId'];
+            }
+            $("select#machine-group").html(options);
+            $("select#machine-group option:first").attr('selected', 'selected');
+            $("select#machine-group").attr('disabled', false);
+          });
+        }
+      });
+
+      $("select#machine-group").change(function() {
+        if ($(this).val() == 'Z') {
+          $("select#machine").html("<option>Select a machine group</option>");
+          $("select#machine").attr('disabled', true);
+        } else {
+          var machine_id = $(this).val();
+          var url = "/webmonitor/filters/machine-group/" + machine_id + "/machines/";
+
+          $.getJSON(url, function(machines) {
+            var options = '<option value="Z">Select a machine group</option>';
+            for (var i = 0; i < machines.length; i++) {
+              options += '<option value="' + machines[i].fields['machineId'] + '" class = "' + classAttribute + '.' + machines[i].fields['machineId'] + '">' + machines[i].fields['machineDescr'] + '</option>';
+            }
+            $("select#machine").html(options);
+            $("select#machine option:first").attr('selected', 'selected');
+            $("select#machine").attr('disabled', false);
+          });
+        }
+      });
+
+      $("select#machine").change(function() {
+        if ($(this).val() == -1) {
+          return;
+        } else {
+          //myAwesomeFunctionToCallReportGraphics();
+        }
+      });
+
+      /*$("select#company").select2();*/
+      /*$('select#site').select2();*/
+      /*$('select#plant').select2();*/
+      /*$('select#machine-group').select2();*/
+      /*$('select#machine').select2();*/
+
+    });
+</script>

@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title collapse-filter"><a data-toggle="collapse" href="#filter-collapse"
+                                                           aria-expanded="true" aria-controls="filter-collapse"
+                                                           class="btn-block">Custom Reports</a></h3>
+                <span class="pull-right"><i class="fa fa-chevron-up" aria-hidden="true"></i></span>
+            </div>
+            <div id="filter-collapse" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <form action="" method="get" accept-charset="utf-8" class="form-inline">
+                        <div class="form-group">
+                            <label for="custom-report">Custom report</label>
+                            <select class="form-control" id="custom-report">
+                                <option selected>Choose...</option>
+                                {% for custom_report in custom_report_list %}
+                                <option value="{{ custom_report.customReportId}}">{{ custom_report.customReportDescr}}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Load</button>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">New</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="formGroupExampleInput2">Name</label>
+                            <input type="text" class="form-control" id="formGroupExampleInput2"
+                                   placeholder="Another input">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

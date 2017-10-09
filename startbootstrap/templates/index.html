@@ -1,0 +1,7 @@
+{% extends 'base.html' %} {% load staticfiles %} {% load i18n %}
+{% trans "Home" as the_home %}
+{% block title %}{{ the_home }}{% endblock %}
+{% block head %}
+{% endblock %}
+{% block page-title %}{{ the_home }}{% endblock %}
+{% block main-content %}<img src="{% static 'images/iot_bg5.jpg' %}" alt="" />{% endblock %}

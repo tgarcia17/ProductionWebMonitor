@@ -1,0 +1,61 @@
+{% extends "baselp.html" %}
+
+{% block head %}
+<!--[if IE]>
+<link rel="shortcut icon" href="/AjProdMonitorApp/static/images/1491944224_alert.ico"><![endif]-->
+<link rel="apple-touch-icon-precomposed" href="/AjProdMonitorApp/static/images/1491944236_alert.png">
+<link rel="icon" href="/AjProdMonitorApp/static/images/1491944242_alert.png">
+{% endblock %}
+
+{% block main-content %}
+{% if form.errors %}
+<div class="alert alert-warning">Your <strong>username and password</strong> didn't match. Please try again.</div>
+{% endif %}
+{% if next %}
+{% if user.is_authenticated %}
+<div class="alert alert-warning">Your account </strong>doesn't have access</strong> to this page. Please contact to the administrator.</div>
+{% else %}
+<div class="alert alert-warning"><strong>Please login</strong> to see this page.</div>
+{% endif %}
+{% endif %}
+<!-- Top content -->
+<div class="top-content">
+    <div class="inner-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2 text">
+                    <h1><strong>Ajover</strong> production monitor</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 form-box">
+                    <div class="form-top">
+                        <div class="form-top-left">
+                            <h3>Login</h3>
+                            <p>Enter your username and password to log on:</p>
+                        </div>
+                        <div class="form-top-right">
+                            <i class="fa fa-lock"></i>
+                        </div>
+                    </div>
+                    <div class="form-bottom">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                {{ form.username.label_tag }}
+                                {{ form.username }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.password.label_tag }}
+                                {{ form.password }}
+                            </div>
+                            <input type="submit" value="login"/>
+                            <input type="hidden" name="next" value="{{ next }}"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% load i18n %}
+<form action="" method="" id="custom-report-form" accept-charset="utf-8">
+    {% csrf_token %}
+            <label for="machine-reason">{% trans "Machine Name:" %}</label>
+            <input type="tetxt" class="form-control" id="machine-reason" disabled>
+            <label for="startDttm-reason">{% trans "Start Date Time:" %}</label>
+            <input type="tetxt" class="form-control" id="startDttm-reason" disabled>
+            <label for="current-reason">{% trans "Current Reason:" %}</label>
+            <input type="text" class="form-control" id="current-reason" disabled>
+            <br/>
+            <label for="new-reason">{% trans "New Reason:" %}</label>
+            <input type="text" class="form-control" id="new-reason" placeholder="Pick the new reaon" required>
+</form>

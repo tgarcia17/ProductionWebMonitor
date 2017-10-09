@@ -1,0 +1,14 @@
+<div class="col-lg-12">
+            <fieldset>
+                {% for i in report_list %}
+                    <div class="col-lg-10 widget-option checkbox checkbox-info checkbox-circle">
+                        <input type="hidden" class="report" value="{{ i.reportId }}"/>
+                        <input type="hidden" class="function" value="{{ i.reportFunctionName }}"/>
+                        <input type="hidden" class="tooltip-text" value="{{ i.tooltipDecr }}"/>
+                        <input type="hidden" class="tooltip-icon" value="{{ i.uriIcon }}"/>
+                        <input type="checkbox" name="widget" class="checkbox widget" id="{{ i.reportId }}"/>
+                        <label for="{{ i.reportId }}" class="label">{{ i.reportDescr}}</label>
+                    </div>
+                {% endfor %}
+            </fieldset>
+        </div>

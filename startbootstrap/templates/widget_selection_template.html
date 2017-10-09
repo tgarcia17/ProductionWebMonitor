@@ -1,0 +1,71 @@
+{% load i18n %}
+{% load category_widget_list %}
+<form action="" method="" id="custom-report-form" accept-charset="utf-8">
+    {% csrf_token %}
+    <div class="row">
+        <div class="panel-group col-md-12" id="accordion">
+            {% for i in categoryList %}
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#{{ i.categoryId}}">
+                        {{ i.categoryDescr}}</a>
+                      </h4>
+                    </div>
+                    <div id="{{ i.categoryId}}" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                          {% category_widget_list i.categoryId %}
+                      </div>
+                    </div>
+                  </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="variables">
+        <legend>{% trans "Variables" %}</legend>
+        <div class="col-md-12">
+            <select id="variable" multiple = "multiple">
+                <option name="variable" value="OEE" class="OEE">OEE</option>
+                <option name="variable" value="Availability" class="Availability">Availability</option>
+                <option name="variable" value="Performance" class="Performance">Performance</option>
+                <option name="variable" value="below_rate_count" class="below_rate_count">below_rate_count</option>
+                <option name="variable" value="part_pulse_masked" class="part_pulse_masked">part_pulse_masked</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <fieldset>
+                <div class="checkbox checkbox-info checkbox-circle">
+                    <table>
+                        <tr>
+                            <td><input type="checkbox" id="min"/><label for="min" style="padding-right: 10px">{% trans "Min" %}</label></td>
+                            <td><input type="checkbox" id="max"/><label for="max" style="padding-right: 10px">{% trans "Max" %}</label></td>
+                            <td><input type="checkbox" id="avg"/><label for="avg" style="padding-right: 10px">{% trans "Avg" %}</label></td>
+                            <td><input type="checkbox" id="trend"/><label for="trend" style="padding-right: 10px">{% trans "Trend" %}</label></td>
+                        </tr>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row" id="widget-size">
+        <legend>{% trans "Widget Size" %}</legend>
+        <div class="col-md-6">
+            <label><input type="radio" name="optradio" value="large" id="large">{% trans "Large" %}</label>
+            <label><input type="radio" name="optradio" value="medium" id="medium">{% trans "Medium" %}</label>
+            <label><input type="radio" name="optradio" value="small" id="small">{% trans "Small" %}</label>
+        </div>
+    </div>
+    <div class="row">
+        {% trans "Monitor Mode" as monitor_mode %}
+        <legend>{{ monitor_mode }}</legend>
+        <div class="col-md-6">
+            <fieldset>
+                <div class="checkbox checkbox-info checkbox-circle">
+                    <input type="checkbox" id="monitorFlag"/><label for="monitorFlag">{{ monitor_mode }}</label>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</form>

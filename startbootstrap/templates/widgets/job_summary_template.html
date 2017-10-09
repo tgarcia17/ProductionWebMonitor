@@ -1,0 +1,80 @@
+{% load i18n %}
+{% trans "Timeline" as the_timeline %}
+{% trans "Move a month backward" as month_back %}
+{% trans "Move a day backward" as day_back %}
+{% trans "Move a day forward" as day_for %}
+{% trans "Move a month forward" as month_for %}
+<div class = "main-template col-lg-12 panel-resizable" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div class="template" draggable="true" ondragstart="drag(event)" id = "job-summary-template">
+        <div class="card">
+            <div class="card-header dropdown" style="line-height:0px">
+                        <h3 class="panel-title dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-bar-chart-o"></i>
+                            {% trans "Job Summary Table" %}
+                        </h3>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                <li class="dropdown-submenu">
+                                    <a tabindex="-1" href="#">{% trans "Columns" %}</a>
+                                    <ul class="dropdown-menu">
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="0" class="toggle-vis-col" table-name="table-job-sum">{% trans "Name" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="1" class="toggle-vis-col" table-name="table-job-sum">{% trans "Job" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="2" class="toggle-vis-col" table-name="table-job-sum">{% trans "Description" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="3" class="toggle-vis-col" table-name="table-job-sum">{% trans "Article" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="4" class="toggle-vis-col" table-name="table-job-sum">{% trans "Start" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="5" class="toggle-vis-col" table-name="table-job-sum">{% trans "End" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="6" class="toggle-vis-col" table-name="table-job-sum">{% trans "Duration" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="7" class="toggle-vis-col" table-name="table-job-sum">{% trans "Availability" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="8" class="toggle-vis-col" table-name="table-job-sum">{% trans "Performance" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="9" class="toggle-vis-col" table-name="table-job-sum">{% trans "OEE" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="10" class="toggle-vis-col" table-name="table-job-sum">{% trans "Expected" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="11" class="toggle-vis-col" table-name="table-job-sum">{% trans "Actual" %}</label></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <div class = "row row-time-line">
+                                <p>&nbsp &nbsp</p>
+                                <div id = "start-dt-job-summary" class = "card-start-date" style="line-height:15px"> </div>
+                                <p>&nbsp &nbsp</p>
+                                <div style="line-height:15px">-</div>
+                                <p>&nbsp &nbsp</p>
+                                <div id = "end-dt-job-summary" class = "card-end-date" style="line-height:15px"> </div>
+                                <p>&nbsp &nbsp &nbsp &nbsp</p>
+                                <div align="right" class = "content-time-line">
+                                  <input type = "hidden" class = "report" value = "JOB_SUMMAR">
+                                  <input type = "hidden" class = "function" value = "graficarJobSummary">
+                                  <i class="fa fa-backward month-backward" aria-hidden="true" data-toggle="tooltip" title="{{ month_back }}"></i>
+                                  <i class="fa fa-chevron-left day-backward" aria-hidden="true" data-toggle="tooltip" title="{{ day_back }}"></i>
+                                  <span class="nav-link-text">{{ the_timeline }}</span>
+                                  <i class="fa fa-chevron-right day-forward" aria-hidden="true" data-toggle="tooltip" title="{{ day_for }}"></i>
+                                  <i class="fa fa-forward month-forward" aria-hidden="true" data-toggle="tooltip" title="{{ month_for }}"></i>
+                                </div>
+                            </div>
+
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="tbl-job-summary-h" class="table table-bordered" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Name" %}</th>
+                                <th>{% trans "Job" %}</th>
+                                <th>{% trans "Description" %}</th>
+                                <th>{% trans "Article" %}</th>
+                                <th>{% trans "Start" %}</th>
+                                <th>{% trans "End" %}</th>
+                                <th>{% trans "Duration" %}</th>
+                                <th>{% trans "Availability" %}</th>
+                                <th>{% trans "Performance" %}</th>
+                                <th>{% trans "OEE" %}</th>
+                                <th>{% trans "Run Speed Expected" %}</th>
+                                <th>{% trans "Run Speed Actual" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody id = "tbl-job-summary">
+                        </tbody>
+                    </table>
+                </div>
+                <br/>
+            </div>
+        </div>
+    </div>
+</div>

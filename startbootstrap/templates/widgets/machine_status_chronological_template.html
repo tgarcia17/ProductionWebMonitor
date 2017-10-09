@@ -1,0 +1,40 @@
+{% load i18n %}
+{% trans "Timeline" as the_timeline %}
+{% trans "Move a month backward" as month_back %}
+{% trans "Move a day backward" as day_back %}
+{% trans "Move a day forward" as day_for %}
+{% trans "Move a month forward" as month_for %}
+<div class = "main-template col-lg-12 panel-resizable" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div class="template" draggable="true" ondragstart="drag(event)" id = "machine-status-chronological-template">
+        <div class="card">
+            <div class="card-header dropdown" style="line-height:0px">
+                        <h3 class="panel-title dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-bar-chart-o"></i>
+                            {% trans "Machine Status Chronological" %}
+                        </h3>
+
+                            <div class = "row row-time-line">
+                                <p>&nbsp &nbsp</p>
+                                <div id = "start-dt-machine-status-chronological" class = "card-start-date" style="line-height:15px"> </div>
+                                <p>&nbsp &nbsp</p>
+                                <div style="line-height:15px">-</div>
+                                <p>&nbsp &nbsp</p>
+                                <div id = "end-dt-machine-status-chronological" class = "card-end-date" style="line-height:15px"> </div>
+                                <p>&nbsp &nbsp &nbsp &nbsp</p>
+                                <div align="right" class = "content-time-line">
+                                  <input type = "hidden" class = "report" value = "MSTATUS_CH">
+                                  <input type = "hidden" class = "function" value = "graficarMachineStatusChronological">
+                                  <i class="fa fa-backward month-backward" aria-hidden="true" data-toggle="tooltip" title="{{ month_back }}"></i>
+                                  <i class="fa fa-chevron-left day-backward" aria-hidden="true" data-toggle="tooltip" title="{{ day_back }}"></i>
+                                  <span class="nav-link-text">{{ the_timeline }}</span>
+                                  <i class="fa fa-chevron-right day-forward" aria-hidden="true" data-toggle="tooltip" title="{{ day_for }}"></i>
+                                  <i class="fa fa-forward month-forward" aria-hidden="true" data-toggle="tooltip" title="{{ month_for }}"></i>
+                            </div>
+                            </div>
+                    </div>
+            <div class="card-body">
+                <div id="machine-panel-chro">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+{% load i18n %}
+{% trans "Timeline" as the_timeline %}
+{% trans "Move a month backward" as month_back %}
+{% trans "Move a day backward" as day_back %}
+{% trans "Move a day forward" as day_for %}
+{% trans "Move a month forward" as month_for %}
+<div class = "main-template col-lg-12 panel-resizable" ondrop="drop(event)" ondragover="allowDrop(event)">
+    <div class="template" draggable="true" ondragstart="drag(event)" id = "machine-variable-status-template">
+            <div class="card">
+                <div class="card-header dropdown" style="line-height:0px">
+                            <h3 class="panel-title dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-bar-chart-o"></i>
+                                {% trans "Machine Variable Status" %}
+                            </h3>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                <li class="dropdown-submenu">
+                                    <a tabindex="-1" href="#">{% trans "Columns" %}</a>
+                                    <ul class="dropdown-menu">
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="0" class="toggle-vis-col" table-name="table-var-status">{% trans "Plant" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="1" class="toggle-vis-col" table-name="table-var-status">{% trans "Machine" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="2" class="toggle-vis-col" table-name="table-var-status">{% trans "Variable" %}</label></li>
+                                        <li><label class="label-toggle-vis-col"><input type="checkbox" checked="true" value="" data-column="3" class="toggle-vis-col" table-name="table-var-status">{% trans "value" %}</label></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                                <div class = "row row-time-line">
+                                    <p>&nbsp &nbsp</p>
+                                    <div id = "start-dt-machine-variable-status" class = "card-start-date" style="line-height:15px"> </div>
+                                    <p>&nbsp &nbsp</p>
+                                    <div style="line-height:15px">-</div>
+                                    <p>&nbsp &nbsp</p>
+                                    <div id = "end-dt-machine-variable-status" class = "card-end-date" style="line-height:15px"> </div>
+                                    <p>&nbsp &nbsp &nbsp &nbsp</p>
+                                    <div align="right" class = "content-time-line">
+                                      <input type = "hidden" class = "report" value = "MVAR_STATU">
+                                      <input type = "hidden" class = "function" value = "graficarMachineVariableStatus">
+                                      <i class="fa fa-backward month-backward" aria-hidden="true" data-toggle="tooltip" title="{{ month_back }}"></i>
+                                      <i class="fa fa-chevron-left day-backward" aria-hidden="true" data-toggle="tooltip" title="{{ day_back }}"></i>
+                                      <span class="nav-link-text">{{ the_timeline }}</span>
+                                      <i class="fa fa-chevron-right day-forward" aria-hidden="true" data-toggle="tooltip" title="{{ day_for }}"></i>
+                                      <i class="fa fa-forward month-forward" aria-hidden="true" data-toggle="tooltip" title="{{ month_for }}"></i>
+                                    </div>
+                                </div>
+
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="tbl-variables-h" class="table table-bordered" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>{% trans "Plant" %}</th>
+                                    <th>{% trans "Machine" %}</th>
+                                    <th>{% trans "Variable" %}</th>
+                                    <th>{% trans "Value" %}</th>
+                                </tr>
+                            </thead>
+                            <tbody id = "tbl-variables">
+                            </tbody>
+                        </table>
+                    </div>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>
