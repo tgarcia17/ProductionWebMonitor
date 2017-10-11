@@ -257,35 +257,48 @@ var chartPlantStatusControl = [];
         var datasetIndex;
         var i ;
         var machineName;
+        var csrftoken = getCookie('csrftoken');
         var index = chartNameStatusControl.indexOf(e.target.id);
+        var arrayKey;
         if (index >= 0){
             machineName = e.target.id.split("-")[0];
             chartStatus = chartStatusControl[index];
             idChart = chartStatus.id;
             idPlanta = chartPlantStatusControl[index];
-            for (i = 0 ; i < chartStatus.data.datasets.length; i++    ){
-                if (chartStatus.data.datasets[i].label == 'UnScheduleDown'){
-                    datasetIndex = i;
-                    break;
+            arrayKey = idPlanta.split(".");
+            var url = "/iot/webmonitor/filters/plant/" + arrayKey[0] + "/" + arrayKey[1] + "/" + arrayKey[2] + "/reasons/";
+            $.getJSON(url, function(reasons) {
+                $( ".plant-reason" ).remove();
+                for (var i = 0; i < reasons.length; i++) {
+                    $('#new-reason').append("<option class='plant-reason' value='" + reasons[i]['reasonId']+ "'>" + reasons[i]['reasonDescr'] + "</option>");
                 }
-            }
-            for (i = 0 ; i < chartStatus.data.datasets[0].data.length - 1; i++    )
-            {
-                label = chartStatus.data.labels[i];
-                value = chartStatus.data.datasets[0].data[i];
-                x_ = chartStatus.data.datasets[0]._meta[idChart].data[i]._model.x;
-                xNext = chartStatus.data.datasets[0]._meta[idChart].data[i+1]._model.x;
-                y_ = chartStatus.data.datasets[0]._meta[idChart].data[i]._model.y;
-                if (value == 100){
-                    if (x_ <= e.offsetX && e.offsetX <= xNext && e.offsetY >= y_){
-                        console.log(label + ' - ' +value + '- ' + x_ + '- ' + xNext + '- ' +  y_+ '- ' +e.offsetX+ '- ' +chartNameStatusControl[index]);
-                        $("#machine-reason").val(machineName);
-                        $("#startDttm-reason").val(label);
-                        $("#DowntimeReasonChange").modal()
+                for (i = 0 ; i < chartStatus.data.datasets.length; i++    ){
+                    if (chartStatus.data.datasets[i].label == 'UnScheduleDown'){
+                        datasetIndex = i;
                         break;
                     }
                 }
-            }
+                console.log(chartStatus.data.datasets[0]);
+                for (i = 0 ; i < chartStatus.data.datasets[0].data.length - 1; i++    )
+                {
+                    console.log('i');
+                    label = chartStatus.data.labels[i];
+                    value = chartStatus.data.datasets[0].data[i];
+                    x_ = chartStatus.data.datasets[0]._meta[idChart].data[i]._model.x;
+                    xNext = chartStatus.data.datasets[0]._meta[idChart].data[i+1]._model.x;
+                    y_ = chartStatus.data.datasets[0]._meta[idChart].data[i]._model.y;
+                    if (value == 100){
+                        if (x_ <= e.offsetX && e.offsetX <= xNext && e.offsetY >= y_){
+                            console.log(label + ' - ' +value + '- ' + x_ + '- ' + xNext + '- ' +  y_+ '- ' +e.offsetX+ '- ' +chartNameStatusControl[index]);
+                            $("#machine-reason").val(machineName);
+                            $("#startDttm-reason").val(label);
+                            $("#DowntimeReasonChange").modal()
+                            break;
+                        }
+                    }
+                }
+            });
+
         }
     }
 
@@ -373,7 +386,7 @@ var chartPlantStatusControl = [];
                     chart = new Chart(MachineId + '-status-canvas', config);
                     chartStatusControl.push(chart);
                     chartNameStatusControl.push(MachineId + '-status-canvas');
-                    chartPlantStatusControl.push(PlantId);
+                    chartPlantStatusControl.push(CompanyId+'.'+LocationId+'.'+PlantId);
                 for (i = 0; i < status.length; i++){
                     values = status[i].slice(1, status[i].length);
                     if (status[i][0] != 'none'){
@@ -1160,7 +1173,7 @@ var chartPlantStatusControl = [];
 
         var fechaInicio = startDt[0].value;
         var fechaFin = endDt[0].value;
-        
+
         var f = fechaInicio.split("-");
         var year = f[0];
         var month = f[1];
@@ -3987,9 +4000,7 @@ function graficarProductionSummary(start_date, end_date)
             widget = widgets[i].getElementsByClassName('widget');
             text = widgets[i].getElementsByClassName('tooltip-text');
             icon = widgets[i].getElementsByClassName('tooltip-icon');
-            console.log('icon[0].value: '+icon[0].value);
             var content = "<table class='tooltip-icon'><tr><th><img src='/" + icon[0].value + "'/></th><th>" + text[0].value +"</th></tr></table>";
-            console.log('content: '+content);
             labelClass = $("label[for='"+widget[0].id+"']").attr("class");
             $("label[for='"+widget[0].id+"']").tooltip({title: content, html: true, placement: "right"});
         }
@@ -4066,7 +4077,6 @@ function graficarProductionSummary(start_date, end_date)
             //$("select#site").attr('disabled', false);
           });
         } else {
-          //console.log("remove sites " + parentClass);
           $('div[name="' + parentClass + '"]').remove();
         }
       });
@@ -4092,7 +4102,6 @@ function graficarProductionSummary(start_date, end_date)
             //$("select#site").attr('disabled', false);
           });
         } else {
-          //console.log("remove plants " + parentClass);
           $('div[name="' + parentClass + '"]').remove();
         }
       });
@@ -4100,7 +4109,6 @@ function graficarProductionSummary(start_date, end_date)
       /* Plant is selected */
       $("#plant").on("change", "input[type=checkbox]", function() {
         var parentClass = $(this).attr("class");
-        //console.log("get machine groups " + parentClass);
         if ($(this).is(':checked')) {
           var plant_id = $(this).val();
           var index = $(this).attr("class").split(".");
@@ -4122,7 +4130,6 @@ function graficarProductionSummary(start_date, end_date)
             //$("select#plant").attr('disabled', false);
           });
         } else {
-          //console.log("remove machine groups " + parentClass);
           $('div[name="' + parentClass + '"]').remove();
         }
       });
@@ -4149,16 +4156,13 @@ function graficarProductionSummary(start_date, end_date)
             //$("select#machine").attr('disabled', false);
           });
         } else {
-          //console.log("remove machine  " + parentClass);
           $('div[name="' + parentClass + '"]').remove();
         }
       });
 
       /* machine selected */
       $("#machine").on("change", "input[type=checkbox]", function() {
-        //console.log($(this).val() + " › " + $(this).is(':checked'));
         if ($(this).is(':checked')) {
-          //console.log("Get report for: " + $(this).val());
         } else {
 
         }

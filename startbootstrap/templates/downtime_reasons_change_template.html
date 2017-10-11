@@ -9,5 +9,10 @@
             <input type="text" class="form-control" id="current-reason" disabled>
             <br/>
             <label for="new-reason">{% trans "New Reason:" %}</label>
-            <input type="text" class="form-control" id="new-reason" placeholder="Pick the new reaon" required>
+            <div class="form-group">
+                <select class="form-control" id="new-reason">
+                    <option disabled selected>{% trans "choose the new reason" %}</option>
+                    <option value="{{ reason.reasonId}}" name="{{ reason.reasonId}}" class="plant-reason">{{ reason.reasonDescr}}</option>
+                </select>
+            </div>
 </form>

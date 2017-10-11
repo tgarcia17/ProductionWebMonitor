@@ -22,6 +22,7 @@ from webmonitor.models import CustomReportWidget
 from webmonitor.models import Shift
 from webmonitor.models import Calendar
 from webmonitor.models import LaborDay
+from webmonitor.models import MachineClass
 
 # Register your models here.
 admin.site.register(Company)
@@ -48,3 +49,4 @@ admin.site.register(CustomReportMachine)
 admin.site.register(CustomReportWidget)
 admin.site.register(MachineUser)
 admin.site.register(ReportUser)
+admin.site.register(MachineClass)

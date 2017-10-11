@@ -209,18 +209,6 @@ class ReportUser(models.Model):
     def __str__(self):
         return str(self.user)
 
-class MachineClass:
-    machineClassId = models.CharField(max_length=10)
-    machineClassDescr = models.CharField(max_length=30)
-    machines = models.ManyToManyField(Machine)
-
-    def __str__(self):
-        return str(self.machineClassId) + ' - ' + str(self.machineClassDescr)
-
-class PlantReasons:
-    user = models.ForeignKey(User)
-    plant = models.ForeignKey(Plant)
-
 class ReportVariable(models.Model):
     report = models.ForeignKey(Report, on_delete=models.CASCADE, null=True)
     variableId = models.CharField(max_length=10, null=True)
@@ -228,7 +216,6 @@ class ReportVariable(models.Model):
 
     def __str__(self):
         return str(self.variableId) + ' - ' + str(self.variableDescr)
-
 
 class CustomReport(UserData):
     user = models.ForeignKey(User)
@@ -287,4 +274,15 @@ class CustomReportMachine(models.Model):
 
 class MachineUser(models.Model):
     user = models.ForeignKey(User)
-    machine = mod
+    machine = models.ManyToManyField(Machine)
+
+    def __str__(self):
+        return str(self.user)
+
+class MachineClass(models.Model):
+    machineClassId = models.CharField(max_length=10)
+    machineClassDescr = models.CharField(max_length=30)
+    machines = models.ManyToManyField(Machine)
+
+    def __str__(self):
+        return str(self.machineClassId) + ' - ' + str(self.machineClassDescr)

@@ -421,33 +421,24 @@ def MachineStatusDataRefine(resultDataSource):
         d2 = datetime.datetime.strptime(endDT, '%Y-%m-%d %H:%M:%S')
         startsDT = startsDT[5:7] + '/' + startsDT[8:10] + '/' + startsDT[0:4] + ' ' + startsDT[11:13] + ':' + startsDT[14:16] + ':' + startsDT[17:19]
         endDT = endDT[5:7] + '/' + endDT[8:10] + '/' + endDT[0:4] + ' ' + endDT[11:13] + ':' + endDT[14:16] + ':' + endDT[17:19]
-        if stat[0] == 'UnScheduleDown' and not first:
-            d1_ts = time.mktime(d1.timetuple())
-            d2_ts = time.mktime(d2.timetuple())
-            seconds = int(d2_ts - d1_ts)
-            if seconds < 3:
-                data[len(data) - 1][2] = endDT
-            else:
-                row.append(stat[0])
-                row.append(startsDT)
-                row.append(endDT)
-                data.append(row)
+        if first:
+            row.append(stat[0])
+            row.append(startsDT)
+            row.append(endDT)
+            data.append(row)
+            first = False
+            last = stat[0]
         else:
-            if not first:
-                if data[len(data) - 1][0] == stat[0]:
-                    data[len(data) - 1][2] = endDT
-                else:
-                    row.append(stat[0])
-                    row.append(startsDT)
-                    row.append(endDT)
-                    data.append(row)
+            if stat[0] == last:
+                data[len(data) - 1][2] = endDT
+                last = stat[0]
             else:
                 row.append(stat[0])
                 row.append(startsDT)
                 row.append(endDT)
                 data.append(row)
-                first = False
-
+                last = stat[0]
+    print(data)
     return data
 
 def MachineStatusDataConvertConsol(requestDataSource):
@@ -1314,16 +1305,3 @@ class JobOEEScatterFOGRequest(APIView):
             "status": status,
         }
         return Response(data)
-
-class PlantReasonsPost(APIView):
-    def post(self, request, format=None):
-        jsonText = json.dumps(request.data)
-        dicst = json.loads(jsonText)
-        queryset = Company.objects.all()
-        queryset = queryset.filter(companyId=dicst['companyId'])
-        if queryset.count() == 1:
-            facility = Site(company=queryset[0], siteId=dicst['facilityId'], siteDescr=dicst['facilityDescr'])
-            facility.save()
-            return Response(status=status.HTTP_201_CREATED)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)

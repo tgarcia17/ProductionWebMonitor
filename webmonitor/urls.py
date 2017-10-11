@@ -16,6 +16,9 @@ urlpatterns = [
 
     url(r'^reports/create-custom-report/$', views.create_custom_report, name='create-custom-report'),
 
+    url(r'^filters/plant/(?P<company_id>[\w]+)/(?P<site_id>[\w]+)/(?P<plant_id>[\w]+)/reasons/$',
+        views.json_plant_reasons, name='json_plant_reasons'),
+
     # ajax filters
     url(r'^filters/model-tree-view/$', views.json_model_tree_view, name='json_model_tree_view'),
     url(r'^filters/company/(?P<company_id>[\w]+)/sites/$', views.json_sites, name='json_sites'),
@@ -31,16 +34,5 @@ urlpatterns = [
     # data json api
     url(r'^api/chart/data/$', ChartData.as_view(), name='api-data'),
 
-    # second iteration changes
-    url(r'^developer/bootstrap-grid/$', views.bootstrap_grid, name='bootstrap-grid'),
-    url(r'^developer/bootstrap-typography/$', views.bootstrap_typography, name='bootstrap-typography'),
-    url(r'^developer/bootstrap-panels/$', views.bootstrap_panels, name='bootstrap-panels'),
-    url(r'^developer/bootstrap-tables/$', views.bootstrap_tables, name='bootstrap-tables'),
-    url(r'^developer/bootstrap-forms/$', views.bootstrap_forms, name='bootstrap-forms'),
-    url(r'^developer/bootstrap-buttons/$', views.bootstrap_buttons, name='bootstrap-buttons'),
-    url(r'^developer/bootstrap-notifications/$', views.bootstrap_notifications, name='bootstrap-notifications'),
-    url(r'^developer/bootstrap-icons/$', views.bootstrap_icons, name='bootstrap-icons'),
-    url(r'^developer/bootstrap-chartjs/$', views.bootstrap_chartjs, name='bootstrap-chartjs'),
-    url(r'^developer/bootstrap-c3/$', views.bootstrap_c3, name='bootstrap-c3'),
 
 ]

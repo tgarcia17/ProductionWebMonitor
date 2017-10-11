@@ -10,7 +10,6 @@ import collections
 
 from webmonitor.models import Company as Company1
 from webmonitor.models import MachineUser
-from webmonitor.models import ReportUser
 from webmonitor.models import Report
 from webmonitor.models import CustomReport
 from webmonitor.models import CustomReportMachine
@@ -133,7 +132,6 @@ def create_custom_report(request):
         print('the_machines_str_length: ' + str(array_length))
         for i in range(array_length):
             the_class = the_machines_str[i]
-            print(the_class)
             the_keys = the_class.split(".")
             the_machine = Machine.objects.get(machineGroup__plant__site__company__companyId=the_keys[0],
                                               machineGroup__plant__site__siteId=the_keys[1],
@@ -153,6 +151,21 @@ def create_custom_report(request):
     else:
         return HttpResponse(json.dumps({"nothing to see": "oh!"}, content_type="application/json"))
 
+
+@login_required
+def json_plant_reasons(request, company_id, site_id, plant_id):
+    the_plant = Plant.objects.get(plantId=plant_id, site__siteId=site_id, site__company__companyId=company_id)
+    reasons_list = Reason.objects.filter(plant=the_plant)
+
+    resp = []
+    for i in reasons_list:
+        resp2 = collections.OrderedDict()
+        resp2["reasonId"] = str(i.reasonId)
+        resp2["reasonDescr"] = str(i.reasonDescr)
+        resp.append(resp2)
+
+    response = json.dumps(resp)
+    return HttpResponse(response)
 
 ### REPORTS ###
 @login_required

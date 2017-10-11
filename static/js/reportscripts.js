@@ -1,4 +1,27 @@
 var idInterval;
+var tableControl = [];
+var tableNameControl = [];
+var classAttribute;
+var chartStatusControl = [];
+var chartNameStatusControl = [];
+var chartPlantStatusControl = [];
+
+  function formatDurations(minutes){
+     var hrs = Math.floor(minutes / 60);
+     var minT = ((minutes / 60) - hrs) * 60;
+     var min = Math.floor(minT);
+     var seg = Math.floor((minT - min) * 60);
+     var durFormat = hrs.toString() + ':' + min.toString() + ':' + seg + '.000';
+     return durFormat;
+  }
+
+  function formatPercentage(per){
+     return per.toFixed(2);
+  }
+
+  function formatValue(num){
+     return num.toFixed(2);
+  }
 
   function graficarDownTimeReasons(start_date, end_date)
   {
@@ -23,15 +46,6 @@ var idInterval;
      var fechaFin = endDt[0].value;
 
      if ((typeof fechaInicio != 'undefined' && fechaInicio) && (typeof fechaFin != 'undefined' && fechaFin) && arrayReq.length > 0 ) {
-         /*$panel.ploading
-                            (
-                                {
-                                    action: 'show',
-                                    spinnerHTML: '<i></i>',
-                                    spinnerClass: 'fa fa-spinner fa-spin p-loading-fontawesome'
-                                }
-                            );
-         */
          if (typeof start_date != 'undefined')
         {
             fechaInicio = start_date;
@@ -40,6 +54,11 @@ var idInterval;
         {
             fechaFin = end_date;
         }
+
+        var startTime = document.getElementById("startTime").value;
+        var endTime = document.getElementById("endTime").value;
+         fechaInicio = fechaInicio + 'T' + startTime;
+         fechaFin = fechaFin + 'T' + endTime;
          cleanHTMLTable('tbl-body');
          graficarMaquinaDownTimeReasons(arrayReq, arrayReq.length, 0, fechaInicio, fechaFin, labelConsol, avDurationConsol, durationConsol, ocurrencesConsol, perConsol, ocurrencesTotal, durationTotal)
      }
@@ -69,7 +88,6 @@ var idInterval;
         var MachineId = array[4];
         var endpoint = '/iot/restapi/Request/DownTimeReasonsRequestFOG';
         endpoint = endpoint + '?company='+CompanyId+'&location='+LocationId+'&plant='+PlantId+'&machineGroup='+MachineGroupId+'&machineId='+MachineId+'&startDttm='+startDttm+'&endDttm='+endDttm;
-        console.log(endpoint);
 
         var jqxhr = $.getJSON(endpoint, function() {});
 
@@ -130,9 +148,9 @@ var idInterval;
                      h5 = document.createElement("td");
                      t1 = document.createTextNode(labelConsol[h]);
                      t2 = document.createTextNode(ocurrencesConsol[h]);
-                     t3 = document.createTextNode(durationConsol[h]);
-                     t4 = document.createTextNode(avDurationConsol[h].toFixed(4));
-                     t5 = document.createTextNode(perConsol[h].toFixed(4));
+                     t3 = document.createTextNode(formatDurations(durationConsol[h]));
+                     t4 = document.createTextNode(formatDurations(avDurationConsol[h]));
+                     t5 = document.createTextNode(formatPercentage(perConsol[h]));
 
                      h1.appendChild(t1);
                      h2.appendChild(t2);
@@ -158,7 +176,9 @@ var idInterval;
                              } );*/
                  }
                  //$panel.ploading({action: 'hide'});
-                 $('#tbl-dtr').DataTable();
+                 var table = $('#tbl-dtr').DataTable();
+                 tableControl.push(table);
+                 tableNameControl.push('table-downtime');
               }
            });
   }
@@ -207,19 +227,8 @@ var idInterval;
 
         var fechaInicio = startDt.value;
         var fechaFin = endDt.value;
-        console.log('graficarMachineStatus fechaInicio: ' + fechaInicio + ' fechaFin: ' + fechaFin + ' arrayReq: ' + arrayReq.length);
+
         if ((typeof fechaInicio != 'undefined' && fechaInicio) && (typeof fechaFin != 'undefined' && fechaFin) && arrayReq.length > 0 ) {
-            /*
-             $panel.ploading
-                            (
-                                {
-                                    action: 'show',
-                                    spinnerHTML: '<i></i>',
-                                    spinnerClass: 'fa fa-spinner fa-spin p-loading-fontawesome'
-                                }
-                            );
-            */
-            //cleanHTMLPanel('machine-panel');
             if (typeof start_date != 'undefined')
             {
                 fechaInicio = start_date;
@@ -228,14 +237,69 @@ var idInterval;
             {
                 fechaFin = end_date;
             }
+            var startTime = document.getElementById("startTime").value;
+            var endTime = document.getElementById("endTime").value;
+             fechaInicio = fechaInicio + 'T' + startTime;
+             fechaFin = fechaFin + 'T' + endTime;
             graficarMaquinaMachineStatus(arrayReq, arrayReq.length, 0 , fechaInicio, fechaFin);
         }
 
     }
 
+    function processClick(e, elements){
+        var value;
+        var x_;
+        var xNext;
+        var y_;
+        var chartStatus;
+        var label;
+        var idChart;
+        var datasetIndex;
+        var i ;
+        var machineName;
+        var index = chartNameStatusControl.indexOf(e.target.id);
+        console.log('dd');
+        /*if (index >= 0){
+            machineName = e.target.id.split("-")[0];
+            chartStatus = chartStatusControl[index];
+            idChart = chartStatus.id;
+            idPlanta = chartPlantStatusControl[index];
+            var endpoint = '';
+            endpoint = '/iot/webmonitor/reports/post-user-temp-data/';
+            endpoint = endpoint + '?key='+idPlanta;
+            console.log(idPlanta);
+            var jqxhr = $.getJSON(endpoint, function() {});
+            jqxhr.done(function(data) {
+                for (i = 0 ; i < chartStatus.data.datasets.length; i++    ){
+                    if (chartStatus.data.datasets[i].label == 'UnScheduleDown'){
+                        datasetIndex = i;
+                        break;
+                    }
+                }
+                for (i = 0 ; i < chartStatus.data.datasets[0].data.length - 1; i++    )
+                {
+                    label = chartStatus.data.labels[i];
+                    value = chartStatus.data.datasets[0].data[i];
+                    x_ = chartStatus.data.datasets[0]._meta[idChart].data[i]._model.x;
+                    xNext = chartStatus.data.datasets[0]._meta[idChart].data[i+1]._model.x;
+                    y_ = chartStatus.data.datasets[0]._meta[idChart].data[i]._model.y;
+                    if (value == 100){
+                        if (x_ <= e.offsetX && e.offsetX <= xNext && e.offsetY >= y_){
+                            console.log(label + ' - ' +value + '- ' + x_ + '- ' + xNext + '- ' +  y_+ '- ' +e.offsetX+ '- ' +chartNameStatusControl[index]);
+                            $("#machine-reason").val(machineName);
+                            $("#startDttm-reason").val(label);
+                            $("#DowntimeReasonChange").modal()
+                            break;
+                        }
+                    }
+                }
+            });
+
+        }*/
+    }
+
     function graficarMaquinaMachineStatus(arrayMaq, arrayLen, actualPos, startDttm, endDttm)
     {
-            console.log('graficarMaquinaMachineStatus arrayLen: '+arrayLen+' actualPos: '+actualPos);
             var endpoint = '';
             var dates = [];
             var status = [];
@@ -251,8 +315,6 @@ var idInterval;
             var MachineGroupId = array[3];
             var MachineId = array[4];
 
-
-            //chart = new Chart(ctx, config);
             var endpoint = '';
             endpoint = '/iot/restapi/Request/MachineStatusFOGRequest';
             endpoint = endpoint + '?company='+CompanyId+'&location='+LocationId+'&plant='+PlantId+'&machineGroup='+MachineGroupId+'&machineId='+MachineId+'&startDttm='+startDttm+'&endDttm='+endDttm;
@@ -267,6 +329,7 @@ var idInterval;
                             datasets: []
                         },
                         options: {
+                            onClick: processClick,
                             tooltips: {
                                 intersect: false
                             },
@@ -314,8 +377,12 @@ var idInterval;
                             width: 400,
                             height: 100
                         });
+                    newCanvas.addClass('m-status');
                     $('#'+MachineId+'-status-div').append(newCanvas);
                     chart = new Chart(MachineId + '-status-canvas', config);
+                    chartStatusControl.push(chart);
+                    chartNameStatusControl.push(MachineId + '-status-canvas');
+                    chartPlantStatusControl.push(CompanyId+'.'+LocationId+'.'+PlantId);
                 for (i = 0; i < status.length; i++){
                     values = status[i].slice(1, status[i].length);
                     if (status[i][0] != 'none'){
@@ -330,9 +397,6 @@ var idInterval;
                 }
                 if (actualPos < arrayLen - 1)
                 {
-                    /*setTimeout(function() {
-                        graficarMaquinaMachineStatus(arrayMaq, arrayLen, actualPos + 1, startDttm, endDttm);
-                    }, 5000);*/
                     graficarMaquinaMachineStatus(arrayMaq, arrayLen, actualPos + 1, startDttm, endDttm);
                 }
                 else
@@ -356,17 +420,6 @@ var idInterval;
         var fechaInicio = startDt.value;
         var fechaFin = endDt.value;
         if ((typeof fechaInicio != 'undefined' && fechaInicio) && (typeof fechaFin != 'undefined' && fechaFin) && arrayReq.length > 0 ) {
-            /*
-             $panel.ploading
-                            (
-                                {
-                                    action: 'show',
-                                    spinnerHTML: '<i></i>',
-                                    spinnerClass: 'fa fa-spinner fa-spin p-loading-fontawesome'
-                                }
-                            );
-            */
-            //cleanHTMLPanel('machine-panel');
             if (typeof start_date != 'undefined')
             {
                 fechaInicio = start_date;
@@ -375,6 +428,10 @@ var idInterval;
             {
                 fechaFin = end_date;
             }
+            var startTime = document.getElementById("startTime").value;
+            var endTime = document.getElementById("endTime").value;
+             fechaInicio = fechaInicio + 'T' + startTime;
+             fechaFin = fechaFin + 'T' + endTime;
             graficarMaquinaMachineJobOeeScatter(arrayReq, arrayReq.length, 0 , fechaInicio, fechaFin);
         }
 
@@ -397,8 +454,6 @@ var idInterval;
             var MachineGroupId = array[3];
             var MachineId = array[4];
 
-
-            console.log('graficarMaquinaMachineJobOeeScatter arrayReq.arrayLen: ' + arrayLen + 'actualPos: ' + actualPosScatter + 'MachineId: ' + MachineId);
             var endpoint = '';
             endpoint = '/iot/restapi/Request/MachineJobScatterFOGRequest';
             endpoint = endpoint + '?company='+CompanyId+'&location='+LocationId+'&plant='+PlantId+'&machineGroup='+MachineGroupId+'&machineId='+MachineId+'&startDttm='+startDttm+'&endDttm='+endDttm;
@@ -541,17 +596,6 @@ var idInterval;
         var fechaInicio = startDt.value;
         var fechaFin = endDt.value;
         if ((typeof fechaInicio != 'undefined' && fechaInicio) && (typeof fechaFin != 'undefined' && fechaFin) && arrayReq.length > 0 ) {
-            /*
-             $panel.ploading
-                            (
-                                {
-                                    action: 'show',
-                                    spinnerHTML: '<i></i>',
-                                    spinnerClass: 'fa fa-spinner fa-spin p-loading-fontawesome'
-                                }
-                            );
-            */
-            //cleanHTMLPanel('machine-panel');
             if (typeof start_date != 'undefined')
             {
                 fechaInicio = start_date;
@@ -560,6 +604,10 @@ var idInterval;
             {
                 fechaFin = end_date;
             }
+            var startTime = document.getElementById("startTime").value;
+            var endTime = document.getElementById("endTime").value;
+             fechaInicio = fechaInicio + 'T' + startTime;
+             fechaFin = fechaFin + 'T' + endTime;
             graficarMaquinaMachineStatusChronological(arrayReq, arrayReq.length, 0 , fechaInicio, fechaFin);
         }
 
@@ -582,8 +630,6 @@ var idInterval;
             var PlantId = array[2];
             var MachineGroupId = array[3];
             var MachineId = array[4];
-
-            console.log('graficarMachineStatusChronological arrayReq.arrayLen: ' + arrayLen + 'actualPos: ' + actualPosChro + 'MachineId: ' + MachineId);
 
             var endpoint = '';
             endpoint = '/iot/restapi/Request/MachineStatusFOGRequest';
@@ -652,8 +698,7 @@ var idInterval;
                             height: 160
                 });
                 $('#'+MachineId+'-chro-div').append(newCanvas);
-                console.log('graficarMaquinaMachineStatusChronological ' + MachineId+'-chro-div')
-                console.log('graficarMaquinaMachineStatusChronological ' + MachineId + '-chro-canvas')
+
                 chart = new Chart(MachineId + '-chro-canvas', config);
 
                 var scaleNumUn = 0, scaleNumAb = 40
@@ -788,7 +833,7 @@ var idInterval;
                     avgValueAval = avgValue / valuesAval.length;
                 }
 
-                t3 = document.createTextNode(avgValueAval.toFixed(4));
+                t3 = document.createTextNode(formatPercentage(avgValueAval));
                 avgValue = 0;
                 for(var j = 0; j < dates.length; j++)
                 {
@@ -798,7 +843,7 @@ var idInterval;
                 {
                     avgValuePer = avgValue / valuesPer.length;
                 }
-                t4 = document.createTextNode(avgValuePer.toFixed(4));
+                t4 = document.createTextNode(formatPercentage(avgValuePer));
                 avgValue = 0;
                 for(var j = 0; j < dates.length; j++)
                 {
@@ -808,7 +853,7 @@ var idInterval;
                 {
                     avgValueOEE = avgValue / valuesOee.length;
                 }
-                t5 = document.createTextNode(avgValueOEE.toFixed(4));
+                t5 = document.createTextNode(formatPercentage(avgValueOEE));
                 h3.appendChild(t3);
                 h4.appendChild(t4);
                 h5.appendChild(t5);
@@ -848,9 +893,9 @@ var idInterval;
                          h5p = document.createElement("td");
                          t1p = document.createTextNode(plantConsol[h]);
                          t2p = document.createTextNode(machineCounter[h]);
-                         t3p = document.createTextNode((avalConsol[h] / machineCounter[h]).toFixed(4));
-                         t4p = document.createTextNode((perConsol[h] / machineCounter[h]).toFixed(4));
-                         t5p = document.createTextNode((oeeConsol[h] / machineCounter[h]).toFixed(4));
+                         t3p = document.createTextNode(formatPercentage(avalConsol[h] / machineCounter[h]));
+                         t4p = document.createTextNode(formatPercentage(perConsol[h] / machineCounter[h]));
+                         t5p = document.createTextNode(formatPercentage(oeeConsol[h] / machineCounter[h]));
                          h1p.appendChild(t1p);
                          h2p.appendChild(t2p);
                          h3p.appendChild(t3p);
@@ -863,9 +908,12 @@ var idInterval;
                          rowp.appendChild(h5p);
                          myTableConsol.appendChild(rowp);
                      }
-                     $('#area-table').DataTable();
-                     $('#machine-table').DataTable();
-                     //$panel.ploading({action: 'hide'});
+                     var table1 = $('#area-table').DataTable();
+                     tableControl.push(table1);
+                     tableNameControl.push('table-prdn-area');
+                     var table2 = $('#machine-table').DataTable();
+                     tableControl.push(table2);
+                     tableNameControl.push('table-prdn-mach');
                 }
 
         });
@@ -892,14 +940,6 @@ var idInterval;
          var fechaInicio = startDt[0].value;
          var fechaFin = endDt[0].value;
          if ((typeof fechaInicio != 'undefined' && fechaInicio) && (typeof fechaFin != 'undefined' && fechaFin) && arrayReq.length > 0 ) {
-         /*$panel.ploading
-                        (
-                            {
-                                action: 'show',
-                                spinnerHTML: '<i></i>',
-                                spinnerClass: 'fa fa-spinner fa-spin p-loading-fontawesome'
-                            }
-                        );*/
              if (typeof start_date != 'undefined')
             {
                 fechaInicio = start_date;
@@ -908,6 +948,10 @@ var idInterval;
             {
                 fechaFin = end_date;
             }
+            var startTime = document.getElementById("startTime").value;
+            var endTime = document.getElementById("endTime").value;
+             fechaInicio = fechaInicio + 'T' + startTime;
+             fechaFin = fechaFin + 'T' + endTime;
              cleanHTMLTable('tbl-prdn-machine');
              cleanHTMLTable('tbl-prdn-area');
              graficarMaquinaProductionRollup(arrayReq, arrayReq.length, 0, fechaInicio, fechaFin, plantConsol, avalConsol, perConsol, oeeConsol, machineCounter);
@@ -990,8 +1034,8 @@ var idInterval;
                          h2 = document.createElement("td");
                          h3 = document.createElement("td");
                          t1 = document.createTextNode(h.toString()+'.'+labelsConsol[h]);
-                         t2 = document.createTextNode(durationsConsol[h].toFixed(4));
-                         t3 = document.createTextNode(percentageConsol[h].toFixed(4));
+                         t2 = document.createTextNode(formatDurations(durationsConsol[h]));
+                         t3 = document.createTextNode(formatPercentage(percentageConsol[h]));
 
                          h1.appendChild(t1);
                          h2.appendChild(t2);
@@ -1010,8 +1054,8 @@ var idInterval;
                      h2 = document.createElement("td");
                      h3 = document.createElement("td");
                      t1 = document.createTextNode('Total');
-                     t2 = document.createTextNode(durationsTot.toFixed(4));
-                     t3 = document.createTextNode(100);
+                     t2 = document.createTextNode(formatDurations(durationsTot));
+                     t3 = document.createTextNode(formatPercentage(100));
 
                      h1.appendChild(t1);
                      h2.appendChild(t2);
@@ -1023,8 +1067,13 @@ var idInterval;
 
                      myTableBody.appendChild(row);
 
-                     //$panel.ploading({action: 'hide'});
-                     $('#tbl-machineStatus').DataTable();
+                     var table = $('#tbl-machineStatus').DataTable({
+                        "bFilter": false,
+                        "bPaginate": false,
+                        "bInfo": false
+                     });
+                     tableControl.push(table);
+                     tableNameControl.push('table-status-rollup');
               }
 
         });
@@ -1043,7 +1092,7 @@ var idInterval;
      var $exampleCont = $('.font-awesome-spinner-example');
      var $panel = $exampleCont.find('.panel');
      $('.main-template').show();
-     //initSpinner();
+
      var startDt = document.getElementsByName("startDttm");
      var endDt = document.getElementsByName("endDttm");
 
@@ -1051,14 +1100,6 @@ var idInterval;
      var fechaFin = endDt[0].value;
 
      if ((typeof fechaInicio != 'undefined' && fechaInicio) && (typeof fechaFin != 'undefined' && fechaFin) && arrayReq.length > 0 ) {
-         /*$panel.ploading
-                        (
-                            {
-                                action: 'show',
-                                spinnerHTML: '<i></i>',
-                                spinnerClass: 'fa fa-spinner fa-spin p-loading-fontawesome'
-                            }
-                        );*/
         if (typeof start_date != 'undefined')
         {
             fechaInicio = start_date;
@@ -1067,6 +1108,10 @@ var idInterval;
         {
             fechaFin = end_date;
         }
+        var startTime = document.getElementById("startTime").value;
+            var endTime = document.getElementById("endTime").value;
+             fechaInicio = fechaInicio + 'T' + startTime;
+             fechaFin = fechaFin + 'T' + endTime;
          cleanHTMLTable('tbl-body-machineStatus');
          graficarMaquinaStatusRollup(arrayReq, arrayReq.length, 0, fechaInicio, fechaFin, durationsTot, labelsConsol, durationsConsol, percentageConsol);
      }
@@ -1091,7 +1136,6 @@ var idInterval;
       function graficarMachineVariableStatus()
     {
         $('.main-template').show();
-        //initSpinner();
         var $exampleCont = $('.font-awesome-spinner-example');
         var $panel = $exampleCont.find('.panel');
         var arrayReq = getParamRequest();
@@ -1105,9 +1149,7 @@ var idInterval;
 
     function graficarKPIDaily(start_date, end_date)
     {
-        console.log('Inicio graficarKPIDaily');
         $('.main-template').show();
-        //initSpinner();
         var $exampleCont = $('.font-awesome-spinner-example');
         var $panel = $exampleCont.find('.panel');
         var arrayReq = getParamRequest();
@@ -1127,7 +1169,7 @@ var idInterval;
 
         var fechaInicio = startDt[0].value;
         var fechaFin = endDt[0].value;
-        
+
         var f = fechaInicio.split("-");
         var year = f[0];
         var month = f[1];
@@ -1136,15 +1178,17 @@ var idInterval;
         fechaInicio = f.getFullYear() + "-" + ("0"+f.getMonth()).slice(-2) + "-" + ("0"+(f.getDate()-1)).slice(-2);
 
         if ((typeof fechaInicio != 'undefined' && fechaInicio) && (typeof fechaFin != 'undefined' && fechaFin) && arrayReq.length > 0 ) {
+            var startTime = document.getElementById("startTime").value;
+            var endTime = document.getElementById("endTime").value;
+             fechaInicio = fechaInicio + 'T' + startTime;
+             fechaFin = fechaFin + 'T' + endTime;
             cleanHTMLTable('tbl-kpi-daily');
-            console.log('Entro for función');
             graficarMaquinaKPIDaily(arrayReq, arrayReq.length, 0 , fechaInicio, fechaFin);
         }
     }
 
     function graficarMaquinaKPIDaily(arrayMaq, arrayLen, actualPos, fechaInicio, fechaFin)
   {
-        console.log('graficarMaquinaKPIDaily arrayLen: ' + arrayLen + ' actualPos: ' + actualPos);
         var myTableBody = document.getElementById('tbl-kpi-daily');
         var array = [];
         var company, location, plant, machineGroup, machineId;
@@ -1166,7 +1210,6 @@ var idInterval;
         var row, h1, h2, h3, h4, h5, h6, h7, h8, t1, t2, t3, t4, t5, t6, t7, t8;
         var endpoint = '/iot/restapi/Request/MachineKPIFOGRequest';
         endpoint = endpoint + '?company='+CompanyId+'&location='+LocationId+'&plant='+PlantId+'&machineGroup='+MachineGroupId+'&machineId='+MachineId+'&reqInterval='+'D'+'&startDttm='+fechaInicio+'&endDttm='+fechaFin;
-        console.log(endpoint);
 
         var jqxhr = $.getJSON(endpoint, function() {});
 
@@ -1198,12 +1241,12 @@ var idInterval;
                     h8 = document.createElement("td");
                     t1 = document.createTextNode(machine);
                     t2 = document.createTextNode(f.getFullYear() + "-" + ("0"+f.getMonth()).slice(-2) + "-" + ("0"+(f.getDate()+i)).slice(-2));
-                    t3 = document.createTextNode(ava[j-1]);
-                    t4 = document.createTextNode(ava[j]);
-                    t5 = document.createTextNode(per[j-1]);
-                    t6 = document.createTextNode(per[j]);
-                    t7 = document.createTextNode(oee[j-1]);
-                    t8 = document.createTextNode(oee[j]);
+                    t3 = document.createTextNode(formatPercentage(ava[j-1]));
+                    t4 = document.createTextNode(formatPercentage(ava[j]));
+                    t5 = document.createTextNode(formatPercentage(per[j-1]));
+                    t6 = document.createTextNode(formatPercentage(per[j]));
+                    t7 = document.createTextNode(formatPercentage(oee[j-1]));
+                    t8 = document.createTextNode(formatPercentage(oee[j]));
                     h1.appendChild(t1);
                     h2.appendChild(t2);
                     h3.appendChild(t3);
@@ -1228,7 +1271,9 @@ var idInterval;
                 {
                     graficarMaquinaKPIDaily(arrayMaq, arrayLen, actualPos+1, fechaInicio, fechaFin)
                 }else{
-                    $('#tbl-kpi-daily-h').DataTable();
+                    var table = $('#tbl-kpi-daily-h').DataTable();
+                    tableControl.push(table);
+                    tableNameControl.push('table-kpis-da');
                 }
         });
 
@@ -1236,7 +1281,6 @@ var idInterval;
 
     function graficarKPIMonthly(start_date, end_date)
     {
-        console.log('Inicio graficarKPIMonthly');
         $('.main-template').show();
         //initSpinner();
         var $exampleCont = $('.font-awesome-spinner-example');
@@ -1263,10 +1307,12 @@ var idInterval;
         var month = f[1];
         var day = f[2];
         f = new Date(year, month, day);
-        //console.log('New Year: '+f.getFullYear()+'     New Month: '+("0"+(f.getMonth()-1)).slice(-2)+'     New Day: '+f.getDate());
         fechaInicio = f.getFullYear() + "-" + ("0"+(f.getMonth()-1)).slice(-2) + "-" + ("0"+f.getDate()).slice(-2);
-        console.log('Fecha Inicio: '+fechaInicio);
         if ((typeof fechaInicio != 'undefined' && fechaInicio) && (typeof fechaFin != 'undefined' && fechaFin) && arrayReq.length > 0 ) {
+            var startTime = document.getElementById("startTime").value;
+            var endTime = document.getElementById("endTime").value;
+             fechaInicio = fechaInicio + 'T' + startTime;
+             fechaFin = fechaFin + 'T' + endTime;
             cleanHTMLTable('tbl-kpi-monthly');
             graficarMaquinaKPIMonthly(arrayReq, arrayReq.length, 0 , fechaInicio, fechaFin);
         }
@@ -1275,7 +1321,6 @@ var idInterval;
 
      function graficarMaquinaKPIMonthly(arrayMaq, arrayLen, actualPos, fechaInicio, fechaFin)
   {
-        console.log('graficarMaquinaKPIMonthly arrayLen: ' + arrayLen + ' actualPos: ' + actualPos);
         var myTableBody = document.getElementById('tbl-kpi-monthly');
         var array = [];
         var company, location, plant, machineGroup, machineId;
@@ -1297,7 +1342,6 @@ var idInterval;
         var row, h1, h2, h3, h4, h5, h6, h7, h8, t1, t2, t3, t4, t5, t6, t7, t8;
         var endpoint = '/iot/restapi/Request/MachineKPIFOGRequest';
         endpoint = endpoint + '?company='+CompanyId+'&location='+LocationId+'&plant='+PlantId+'&machineGroup='+MachineGroupId+'&machineId='+MachineId+'&reqInterval='+'M'+'&startDttm='+fechaInicio+'&endDttm='+fechaFin;
-        console.log(endpoint);
 
         var jqxhr = $.getJSON(endpoint, function() {});
 
@@ -1328,12 +1372,12 @@ var idInterval;
                     h8 = document.createElement("td");
                     t1 = document.createTextNode(machine);
                     t2 = document.createTextNode(f.getFullYear() + "-" + ("0"+(f.getMonth()+i)).slice(-2));
-                    t3 = document.createTextNode(ava[j-1]);
-                    t4 = document.createTextNode(ava[j]);
-                    t5 = document.createTextNode(per[j-1]);
-                    t6 = document.createTextNode(per[j]);
-                    t7 = document.createTextNode(oee[j-1]);
-                    t8 = document.createTextNode(oee[j]);
+                    t3 = document.createTextNode(formatPercentage(ava[j-1]));
+                    t4 = document.createTextNode(formatPercentage(ava[j]));
+                    t5 = document.createTextNode(formatPercentage(per[j-1]));
+                    t6 = document.createTextNode(formatPercentage(per[j]));
+                    t7 = document.createTextNode(formatPercentage(oee[j-1]));
+                    t8 = document.createTextNode(formatPercentage(oee[j]));
                     h1.appendChild(t1);
                     h2.appendChild(t2);
                     h3.appendChild(t3);
@@ -1358,7 +1402,9 @@ var idInterval;
                 {
                     graficarMaquinaKPIMonthly(arrayMaq, arrayLen, actualPos+1, fechaInicio, fechaFin)
                 }else{
-                    $('#tbl-kpi-monthly-h').DataTable();
+                    var table = $('#tbl-kpi-monthly-h').DataTable();
+                    tableControl.push(table);
+                    tableNameControl.push('table-kpis-mo');
                 }
         });
     }
@@ -1366,15 +1412,13 @@ var idInterval;
 
     function graficarKPIWeekly(start_date, end_date)
     {
-        console.log('Inicio graficarKPIWeekly');
         $('.main-template').show();
-        //initSpinner();
         var $exampleCont = $('.font-awesome-spinner-example');
         var $panel = $exampleCont.find('.panel');
         var arrayReq = getParamRequest();
         var fechaInicio, fechaFin;
 
-            if (typeof start_date != 'undefined')
+        if (typeof start_date != 'undefined')
             {
                 fechaInicio = start_date;
             }
@@ -1396,7 +1440,10 @@ var idInterval;
         fechaInicio = f.getFullYear() + "-" + ("0"+f.getMonth()).slice(-2) + "-" + ("0"+(f.getDate()-7)).slice(-2);
 
         if ((typeof fechaInicio != 'undefined' && fechaInicio) && (typeof fechaFin != 'undefined' && fechaFin) && arrayReq.length > 0 ) {
-
+            var startTime = document.getElementById("startTime").value;
+            var endTime = document.getElementById("endTime").value;
+             fechaInicio = fechaInicio + 'T' + startTime;
+             fechaFin = fechaFin + 'T' + endTime;
             cleanHTMLTable('tbl-kpi-weekly');
             graficarMaquinaKPIWeekly(arrayReq, arrayReq.length, 0 , fechaInicio, fechaFin);
         }
@@ -1405,7 +1452,6 @@ var idInterval;
 
     function graficarMaquinaKPIWeekly(arrayMaq, arrayLen, actualPos, fechaInicio, fechaFin)
   {
-        console.log('graficarMaquinaKPIWeekly arrayLen: ' + arrayLen + ' actualPos: ' + actualPos);
         var myTableBody = document.getElementById('tbl-kpi-weekly');
         var array = [];
         var company, location, plant, machineGroup, machineId;
@@ -1427,7 +1473,6 @@ var idInterval;
         var row, h1, h2, h3, h4, h5, h6, h7, h8, t1, t2, t3, t4, t5, t6, t7, t8;
         endpoint = '/iot/restapi/Request/MachineKPIFOGRequest';
         endpoint = endpoint + '?company='+CompanyId+'&location='+LocationId+'&plant='+PlantId+'&machineGroup='+MachineGroupId+'&machineId='+MachineId+'&reqInterval='+'W'+'&startDttm='+fechaInicio+'&endDttm='+fechaFin;
-        console.log(endpoint);
 
         var jqxhr = $.getJSON(endpoint, function() {});
 
@@ -1461,12 +1506,12 @@ var idInterval;
                     h8 = document.createElement("td");
                     t1 = document.createTextNode(machine);
                     t2 = document.createTextNode(f.getFullYear() + "-" + numWeek);
-                    t3 = document.createTextNode(ava[j-1]);
-                    t4 = document.createTextNode(ava[j]);
-                    t5 = document.createTextNode(per[j-1]);
-                    t6 = document.createTextNode(per[j]);
-                    t7 = document.createTextNode(oee[j-1]);
-                    t8 = document.createTextNode(oee[j]);
+                    t3 = document.createTextNode(formatPercentage(ava[j-1]));
+                    t4 = document.createTextNode(formatPercentage(ava[j]));
+                    t5 = document.createTextNode(formatPercentage(per[j-1]));
+                    t6 = document.createTextNode(formatPercentage(per[j]));
+                    t7 = document.createTextNode(formatPercentage(oee[j-1]));
+                    t8 = document.createTextNode(formatPercentage(oee[j]));
                     h1.appendChild(t1);
                     h2.appendChild(t2);
                     h3.appendChild(t3);
@@ -1491,7 +1536,9 @@ var idInterval;
                 {
                     graficarMaquinaKPIWeekly(arrayMaq, arrayLen, actualPos+1, fechaInicio, fechaFin)
                 }else{
-                    $('#tbl-kpi-weekly-h').DataTable();
+                    var table = $('#tbl-kpi-weekly-h').DataTable();
+                    tableControl.push(table);
+                    tableNameControl.push('table-kpis-we');
                 }
         });
     }
@@ -1499,9 +1546,7 @@ var idInterval;
 
     function graficarJobSummary(start_date, end_date)
     {
-        console.log('Inicio graficarJobSummary');
         $('.main-template').show();
-        //initSpinner();
         var $exampleCont = $('.font-awesome-spinner-example');
         var $panel = $exampleCont.find('.panel');
         var arrayReq = getParamRequest();
@@ -1522,6 +1567,10 @@ var idInterval;
             {
                 fechaFin = end_date;
             }
+            var startTime = document.getElementById("startTime").value;
+            var endTime = document.getElementById("endTime").value;
+             fechaInicio = fechaInicio + 'T' + startTime;
+             fechaFin = fechaFin + 'T' + endTime;
             cleanHTMLTable('tbl-job-summary');
             graficarMachineJobSummary(arrayReq, arrayReq.length, 0 , fechaInicio, fechaFin);
         }
@@ -1530,7 +1579,6 @@ var idInterval;
 
     function graficarMachineJobSummary(arrayMaq, arrayLen, actualPos, fechaInicio, fechaFin)
   {
-        console.log('graficarMachineJobSummary arrayLen: ' + arrayLen + ' actualPos: ' + actualPos);
         var myTableBody = document.getElementById('tbl-job-summary');
         var array = [];
         var company, location, plant, machineGroup, machineId;
@@ -1560,7 +1608,6 @@ var idInterval;
         var row, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11;
         endpoint = '/iot/restapi/Request/JobSummaryFOGRequest';
         endpoint = endpoint + '?company='+CompanyId+'&location='+LocationId+'&plant='+PlantId+'&machineGroup='+MachineGroupId+'&machineId='+MachineId+'&startDttm='+fechaInicio+'&endDttm='+fechaFin;
-        console.log(endpoint);
 
         var jqxhr = $.getJSON(endpoint, function() {});
 
@@ -1599,12 +1646,12 @@ var idInterval;
                     t4 = document.createTextNode(Article[j]);
                     t5 = document.createTextNode(Start[j]);
                     t6 = document.createTextNode(End[j]);
-                    t7 = document.createTextNode(Duration[j]);
-                    t8 = document.createTextNode(Availability[j]);
-                    t9 = document.createTextNode(Performance[j]);
-                    t10 = document.createTextNode(OEE[j]);
-                    t11 = document.createTextNode(Expected[j]);
-                    t12 = document.createTextNode(Actual[j]);
+                    t7 = document.createTextNode(formatDurations(Duration[j]));
+                    t8 = document.createTextNode(formatPercentage(Availability[j]));
+                    t9 = document.createTextNode(formatPercentage(Performance[j]));
+                    t10 = document.createTextNode(formatPercentage(OEE[j]));
+                    t11 = document.createTextNode(formatValue(Expected[j]));
+                    t12 = document.createTextNode(formatValue(Actual[j]));
                     h1.appendChild(t1);
                     h2.appendChild(t2);
                     h3.appendChild(t3);
@@ -1636,7 +1683,9 @@ var idInterval;
                 {
                     graficarMachineJobSummary(arrayMaq, arrayLen, actualPos+1, fechaInicio, fechaFin)
                 }else{
-                    $('#tbl-job-summary-h').DataTable();
+                    var table = $('#tbl-job-summary-h').DataTable();
+                    tableControl.push(table);
+                    tableNameControl.push('table-job-sum');
                 }
         });
     }
@@ -1645,7 +1694,6 @@ var idInterval;
 function graficarProductionSummary(start_date, end_date)
   {
      $('.main-template').show();
-     //initSpinner();
      var $exampleCont = $('.font-awesome-spinner-example');
      var $panel = $exampleCont.find('.panel');
      var arrayReq = getParamRequest();
@@ -1654,7 +1702,6 @@ function graficarProductionSummary(start_date, end_date)
 
      var fechaInicio = startDt[0].value;
      var fechaFin = endDt[0].value;
-     console.log('graficarProductionSummary fechaInicio: ' + fechaInicio + ' fechaFin: ' + fechaFin + ' arrayReq: ' + arrayReq.length);
      if ((typeof fechaInicio != 'undefined' && fechaInicio) && (typeof fechaFin != 'undefined' && fechaFin) && arrayReq.length > 0 ) {
         if (typeof start_date != 'undefined')
         {
@@ -1664,6 +1711,10 @@ function graficarProductionSummary(start_date, end_date)
         {
             fechaFin = end_date;
         }
+        var startTime = document.getElementById("startTime").value;
+            var endTime = document.getElementById("endTime").value;
+             fechaInicio = fechaInicio + 'T' + startTime;
+             fechaFin = fechaFin + 'T' + endTime;
          graficarShiftProductionSummary(arrayReq, arrayReq.length, 0, fechaInicio, fechaFin);
      }
   }
@@ -1671,7 +1722,6 @@ function graficarProductionSummary(start_date, end_date)
 
     function graficarShiftProductionSummary(arrayMaq, arrayLen, actualPos, startDttm, endDttm)
   {
-         console.log('graficarShiftProductionSummary arrayLen: '+arrayLen+' actualPos: '+actualPos);
          var endpoint = '';
          var labels = [];
          var durations = [];
@@ -1690,8 +1740,6 @@ function graficarProductionSummary(start_date, end_date)
 
          var endpoint = '/iot/restapi/Request/ProductionSummaryFOGRequest';
          endpoint = endpoint + '?company='+CompanyId+'&location='+LocationId+'&plant='+PlantId+'&machineGroup='+MachineGroupId+'&machineId='+MachineId+'&startDttm='+startDttm+'&endDttm='+endDttm;
-         //var myTableBody = document.getElementById('tbl-prod-summary');
-         console.log('Endpoint: ' + endpoint);
 
          var jqxhr = $.getJSON(endpoint, function() {});
 
@@ -1848,12 +1896,12 @@ function graficarProductionSummary(start_date, end_date)
                          var h8 = document.createElement("td");
                          var t1 = document.createTextNode(shifts[h]);
                          var t2 = document.createTextNode(totals[h]);
-                         var t3 = document.createTextNode(avpercents[h]);
-                         var t4 = document.createTextNode(avuptimes[h]);
-                         var t5 = document.createTextNode(perpercents[h]);
-                         var t6 = document.createTextNode(peractrates[h]);
-                         var t7 = document.createTextNode(perexprates[h]);
-                         var t8 = document.createTextNode(oees[h]);
+                         var t3 = document.createTextNode(formatPercentage(avpercents[h]));
+                         var t4 = document.createTextNode(formatDurations(avuptimes[h]));
+                         var t5 = document.createTextNode(formatPercentage(perpercents[h]));
+                         var t6 = document.createTextNode(formatPercentage(peractrates[h]));
+                         var t7 = document.createTextNode(formatPercentage(perexprates[h]));
+                         var t8 = document.createTextNode(formatPercentage(oees[h]));
                          h1.appendChild(t1);
                          h2.appendChild(t2);
                          h3.appendChild(t3);
@@ -1875,7 +1923,14 @@ function graficarProductionSummary(start_date, end_date)
                     //myNewTable.appendChild(myNewTfoot);
                     myNewTable.appendChild(myNewTbody);
                     //$panel.ploading({action: 'hide'});
-                    $('#'+MachineId+'-table-shift').DataTable();
+                    var table = $('#'+MachineId+'-table-shift').DataTable({
+                        "bFilter": false,
+                        "bPaginate": false,
+                        "bInfo": false
+                     });
+
+                     tableControl.push(table);
+                     tableNameControl.push('table-shift');
 
               if (actualPos < arrayLen - 1)
               {
@@ -1891,7 +1946,6 @@ function graficarProductionSummary(start_date, end_date)
 
   function graficarMaquinaMachineVariableStatus(arrayMaq, arrayLen, actualPos)
   {
-        console.log('graficarMaquinaMachineVariableStatus arrayLen: ' + arrayLen + ' actualPos: ' + actualPos);
         var myTableBody = document.getElementById('tbl-variables');
         var array = [];
         var company, location, plant, machineGroup, machineId;
@@ -1941,7 +1995,9 @@ function graficarProductionSummary(start_date, end_date)
                 {
                     graficarMaquinaMachineVariableStatus(arrayMaq, arrayLen, actualPos+1 )
                 }else{
-                    $('#tbl-variables-h').DataTable();
+                    var table = $('#tbl-variables-h').DataTable();
+                    tableControl.push(table);
+                    tableNameControl.push('table-var-status');
                 }
         });
 
@@ -2257,6 +2313,10 @@ function graficarProductionSummary(start_date, end_date)
                 {
                     fechaFin = end_date;
                 }
+                var startTime = document.getElementById("startTime").value;
+                var endTime = document.getElementById("endTime").value;
+                 fechaInicio = fechaInicio + 'T' + startTime;
+                 fechaFin = fechaFin + 'T' + endTime;
                 graficarMaquinaVariableTrend(chart, config, arrayData, arrayVar, arrayVar.length, 0, fechaInicio, fechaFin, minFlg, maxFlg, avgFlg, trendFlg, arrayConsol, OEEFlag, oeeArray, avalArray, perArray, 0);
             }
         }
@@ -2391,6 +2451,10 @@ function graficarProductionSummary(start_date, end_date)
         {
             fechaFin = end_date;
         }
+        var startTime = document.getElementById("startTime").value;
+            var endTime = document.getElementById("endTime").value;
+             fechaInicio = fechaInicio + 'T' + startTime;
+             fechaFin = fechaFin + 'T' + endTime;
 
             for (var k = 0; k < arrayReq.length; k++){
                 var array = arrayReq[k].split(".");
@@ -2424,6 +2488,7 @@ function graficarProductionSummary(start_date, end_date)
         var MachineGroupId = arrayReq[3];
         var MachineId = arrayReq[4];
         var data;
+
         if (currentVar == 'OEE' || currentVar == 'Availability' || currentVar == 'Performance')
         {
                 endpoint = '/iot/restapi/Request/ProductionMachineRollupRequestFOG';
@@ -2458,8 +2523,6 @@ function graficarProductionSummary(start_date, end_date)
                     $('#'+MachineId+'-'+currentVar+'-gauge-div').append(newCanvas);
                      var dataPrint = data.toString().slice(0,3);
                      dataPrint = dataPrint + '%';
-                     console.log('currentVar ' + currentVar + ' data: ' + dataPrint);
-                     console.log(valuesOee);
                      var remData = 0;
                      var color = 'db4343'
                      if (data < 100){
@@ -2794,7 +2857,6 @@ function graficarProductionSummary(start_date, end_date)
         var endpoint = '';
         endpoint = '/iot/startbootstrap/widgets/render-widget';
         endpoint = endpoint + '?reportId='+arrayBlocks[actualPos];
-        console.log('procesarWidgetsBlocks');
         $.get( endpoint, function( data ) {
             var sizeOpt = $('input[name="optradio"]:checked').val();
             if (sizeOpt == 'large')
@@ -2805,9 +2867,9 @@ function graficarProductionSummary(start_date, end_date)
                 }
                 else
                 {
-                    $( "#main-content" ).append(data);
-                    $( "#main-content" ).append('<br class = "template brtemp"/>');
-                    $( "#main-content" ).append('<br class = "template brtemp"/>');
+                    $( "#main-content-lg" ).append(data);
+                    //$( "#main-content" ).append('<br />').addClass("template");
+                    //$( "#main-content" ).append('<br />').addClass("template");
                 }
             }
             else if (sizeOpt == 'medium')
@@ -2822,8 +2884,8 @@ function graficarProductionSummary(start_date, end_date)
                     else
                     {
                         $( "#main-content-md-1" ).append(data);
-                        $( "#main-content-md-1" ).append('<br class = "template brtemp"/>');
-                        $( "#main-content-md-1" ).append('<br class = "template brtemp"/>');
+                        //$( "#main-content-md-1" ).append('<br />').addClass("template");
+                        //$( "#main-content-md-1" ).append('<br />').addClass("template");
                     }
                 }
                 else if (rem == 0)
@@ -2835,8 +2897,8 @@ function graficarProductionSummary(start_date, end_date)
                     else
                     {
                         $( "#main-content-md-2" ).append(data);
-                        $( "#main-content-md-2" ).append('<br class = "template brtemp"/>');
-                        $( "#main-content-md-2" ).append('<br class = "template brtemp"/>');
+                        //$( "#main-content-md-2" ).append('<br class = "template brtemp"/>');
+                        //$( "#main-content-md-2" ).append('<br class = "template brtemp"/>');
                     }
                 }
             }
@@ -2852,8 +2914,8 @@ function graficarProductionSummary(start_date, end_date)
                     else
                     {
                         $( "#main-content-sm-1" ).append(data);
-                        $( "#main-content-sm-1" ).append('<br class = "template brtemp"/>');
-                        $( "#main-content-sm-1" ).append('<br class = "template brtemp"/>');
+                        //$( "#main-content-sm-1" ).append('<br class = "template brtemp"/>');
+                        //$( "#main-content-sm-1" ).append('<br class = "template brtemp"/>');
                     }
                 }
                 else if (rem == 2)
@@ -2865,8 +2927,8 @@ function graficarProductionSummary(start_date, end_date)
                     else
                     {
                         $( "#main-content-sm-2" ).append(data);
-                        $( "#main-content-sm-2" ).append('<br class = "template brtemp"/>');
-                        $( "#main-content-sm-2" ).append('<br class = "template brtemp"/>');
+                        //$( "#main-content-sm-2" ).append('<br class = "template brtemp"/>');
+                        //$( "#main-content-sm-2" ).append('<br class = "template brtemp"/>');
                     }
                 }
                 else if (rem == 0)
@@ -2878,8 +2940,8 @@ function graficarProductionSummary(start_date, end_date)
                     else
                     {
                         $( "#main-content-sm-3" ).append(data);
-                        $( "#main-content-sm-3" ).append('<br class = "template brtemp"/>');
-                        $( "#main-content-sm-3" ).append('<br class = "template brtemp"/>');
+                        //$( "#main-content-sm-3" ).append('<br class = "template brtemp"/>');
+                        //$( "#main-content-sm-3" ).append('<br class = "template brtemp"/>');
                     }
                 }
             }
@@ -2891,9 +2953,9 @@ function graficarProductionSummary(start_date, end_date)
                     }
                     else
                     {
-                        $( "#main-content" ).append(data);
-                        $( "#main-content" ).append('<br class = "template brtemp"/>');
-                        $( "#main-content" ).append('<br class = "template brtemp"/>');
+                        $( "#main-content-lg" ).append(data);
+                        //$( "#main-content" ).append('<br class = "template brtemp"/>');
+                        //$( "#main-content" ).append('<br class = "template brtemp"/>');
                     }
             }
 
@@ -2908,11 +2970,6 @@ function graficarProductionSummary(start_date, end_date)
 
     function procesarWidgetsFunctions(arrayFuncs, start_date, end_date, id_start_date, id_end_date){
         var arrayReq = getParamRequest();
-        //var startDt = document.getElementById("startDttm");
-        //var endDt = document.getElementById("endDttm");
-        console.log('procesarWidgetsFunctions');
-        //var fechaInicio = startDt.value;
-        //var fechaFin = endDt.value;
         $('.main-template').hide();
         ajustarTamanoWidgets();
         executeFunctionsCalls(arrayFuncs, start_date, end_date);
@@ -2932,7 +2989,6 @@ function graficarProductionSummary(start_date, end_date)
             }
         }
         if ($('#monitorFlag').is(':checked')){
-            console.log('monitorModeMachine');
             monitorModeMachine(arrayFuncs);
         }else{
             window.clearInterval(idInterval);
@@ -2941,18 +2997,14 @@ function graficarProductionSummary(start_date, end_date)
 
     function executeFunctionsCalls(arrayFuncs, start_date, end_date){
         var dttm = new Date().toLocaleString();
-        console.log('executeFunctionsCalls* ' + dttm + ' arrayFuncs: ' + arrayFuncs.length );
         for (var i = 0; i < arrayFuncs.length; i++) {
                 func = arrayFuncs[i];
-                console.log('executeFunctionsCalls func ' + func );
                 window[func](start_date, end_date);
         }
     }
     function monitorModeMachine(arrayFuncs)
     {
-          //setInterval(executeFunctionsCalls(arrayFuncs), 10000)
           idInterval = setInterval(function(){ executeFunctionsCalls(arrayFuncs); }, 10000);
-          //setInterval(function(){ alert("Hello"); }, 10000);
     }
 
     function ajustarTamanoWidgets(){
@@ -3065,7 +3117,6 @@ function graficarProductionSummary(start_date, end_date)
         error: function(xhr, errmsg, err) {
           $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: " + errmsg +
             " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
-          console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
         },
 
       });
@@ -3238,7 +3289,7 @@ function graficarProductionSummary(start_date, end_date)
       }
       setTimeout(function() {
         trigger_site(arrSites, arrPlants, arrMachineGroups, arrMachines);
-      }, 500);
+      }, 800);
 
   };
 
@@ -3253,7 +3304,7 @@ function graficarProductionSummary(start_date, end_date)
       }
       setTimeout(function() {
         trigger_plant(arrPlants, arrMachineGroups, arrMachines);
-      }, 500);
+      }, 800);
   };
 
   function trigger_plant(arrPlants, arrMachineGroups, arrMachines) {
@@ -3267,7 +3318,7 @@ function graficarProductionSummary(start_date, end_date)
       }
       setTimeout(function() {
         trigger_machine_group(arrMachineGroups, arrMachines);
-      }, 500);
+      }, 800);
 
   };
 
@@ -3283,7 +3334,7 @@ function graficarProductionSummary(start_date, end_date)
 
       setTimeout(function() {
         trigger_machine(arrMachines);
-      }, 500);
+      }, 800);
 
   };
 
@@ -3402,7 +3453,6 @@ function graficarProductionSummary(start_date, end_date)
 
   function processBtnPrimary(start_date, end_date){
         /*si el OK es del menú de los widgets, tengo que insertar el html correspondiente*/
-        console.log('processBtnPrimary:   start_date: '+start_date+'  end_date: '+end_date);
         $(".brtemp").remove();
         if (typeof start_date == 'undefined')
         {
@@ -3414,11 +3464,9 @@ function graficarProductionSummary(start_date, end_date)
             fecha_fin = document.getElementById("endDttm");
             end_date = fecha_fin.value;
         }
-        console.log('processBtnPrimary:   start_date: '+start_date+'  end_date: '+end_date);
         /*selecciono todos los inputs hidden que se insertaron con los widgets seleccionados para llamar su función correspondiente*/
         var arrayBlocks = [];
         var arrayFuncs = [];
-        console.log('processBtnPrimary');
         var widgets = document.getElementsByClassName('widget-option');
         for (var i = 0; i < widgets.length; i++) {
             widget = widgets[i].getElementsByClassName('checkbox');
@@ -3645,9 +3693,37 @@ function graficarProductionSummary(start_date, end_date)
             processBtnPrimary2(dates.newstartdt, dates.newenddt, startdtid, enddtid, report, funct, maintemplate);
     });
 
+    $('body').on('click', '.mixwidget-table-hide', function () {
+            var opt = $(this);
+            opt.closest(".template").find(".mixwidget-table" ).hide();
+            opt.closest(".template").find(".mixwidget-canvas" ).removeClass("col-lg-12");
+            opt.closest(".template").find(".mixwidget-canvas" ).removeClass("col-lg-5");
+            opt.closest(".template").find(".mixwidget-canvas" ).addClass("col-lg-12");
+            opt.closest(".template").find(".mixwidget-canvas" ).show();
+    });
+
+    $('body').on('click', '.mixwidget-canvas-hide', function () {
+            var opt = $(this);
+            opt.closest(".template").find(".mixwidget-canvas" ).hide();
+            opt.closest(".template").find(".mixwidget-table" ).removeClass("col-lg-12");
+            opt.closest(".template").find(".mixwidget-table" ).removeClass("col-lg-7");
+            opt.closest(".template").find(".mixwidget-table" ).addClass("col-lg-12");
+            opt.closest(".template").find(".mixwidget-table" ).show();
+    });
+
+    $('body').on('click', '.mixwidget-show', function () {
+            var opt = $(this);
+            opt.closest(".template").find(".mixwidget-canvas" ).show();
+            opt.closest(".template").find(".mixwidget-table" ).show();
+            ajustarTamanoWidgets();
+    });
+
+    $('body').on('click', '.columns', function () {
+            $(".per").hide();
+    });
+
     function processBtnPrimary2(start_date, end_date, id_start_date, id_end_date, report_block, report_func, maintemplate){
         /*si el OK es del menú de los widgets, tengo que insertar el html correspondiente*/
-        console.log('processBtnPrimary2:   start_date: '+start_date+'  end_date: '+end_date);
         /*selecciono todos los inputs hidden que se insertaron con los widgets seleccionados para llamar su función correspondiente*/
         $(".brtemp").remove();
         var arrayBlocks = [];
@@ -3840,7 +3916,6 @@ function graficarProductionSummary(start_date, end_date)
 
 
      $('body').on('click', '#tight-fit', function () {
-            console.log('fff');
         $(".gauge-div").removeClass("col-lg-12");
         $(".gauge-div").removeClass("col-lg-6");
         $(".gauge-div").removeClass("col-lg-4");
@@ -3848,7 +3923,6 @@ function graficarProductionSummary(start_date, end_date)
     });
 
     $('body').on('click', '#loose-fit', function () {
-            console.log('fff');
         $(".gauge-div").removeClass("col-lg-12");
         $(".gauge-div").removeClass("col-lg-6");
         $(".gauge-div").removeClass("col-lg-4");
@@ -3856,9 +3930,237 @@ function graficarProductionSummary(start_date, end_date)
     });
 
     $('body').on('click', '#full-fit', function () {
-            console.log('fff');
         $(".gauge-div").removeClass("col-lg-12");
         $(".gauge-div").removeClass("col-lg-6");
         $(".gauge-div").removeClass("col-lg-4");
         $(".gauge-div").addClass("col-lg-12");
+    });
+
+
+
+    /*con esta función capturo el ok de los filtros para actualizar las gráficas*/
+    $( ".btn-primary" ).click(function() {
+        processBtnPrimary();
+     });
+
+    $( "#today" ).click(function() {
+        setToday();
+    });
+
+    $( "#lastweek" ).click(function() {
+        setLastWeek();
+    });
+
+    $( "#thisweek" ).click(function() {
+        setThisWeek();
+    });
+
+    $( "#lastmonth" ).click(function() {
+        setLastMonth();
+    });
+
+    $( "#thismonth" ).click(function() {
+        setThisMonth();
+    });
+
+    $('body').on('click', '.toggle-vis-col', function (e) {
+        //e.preventDefault();
+        var tableName = $(this).attr('table-name')
+        var table;
+        for (var i=0; i < tableNameControl.length; i++){
+            if (tableName == tableNameControl[i]){
+                table = tableControl[i];
+                // Get the column API object
+                var column = table.column( $(this).attr('data-column') );
+                if(this.checked) {
+                    // Toggle the visibility
+                    column.visible( true);
+                }else{
+                    column.visible( false);
+                }
+            }
+        }
+    });
+
+
+
+  $(document).ready(
+    function() {
+
+        $(".main-container.collapse").on('shown.bs.collapse', function () {
+           $(".main-container.collapse").not($(this)).collapse('hide');
+        });
+
+        widgets = document.getElementsByClassName('widget-option');
+        for (var i = 0; i < widgets.length; i++) {
+            widget = widgets[i].getElementsByClassName('widget');
+            text = widgets[i].getElementsByClassName('tooltip-text');
+            icon = widgets[i].getElementsByClassName('tooltip-icon');
+            var content = "<table class='tooltip-icon'><tr><th><img src='/" + icon[0].value + "'/></th><th>" + text[0].value +"</th></tr></table>";
+            labelClass = $("label[for='"+widget[0].id+"']").attr("class");
+            $("label[for='"+widget[0].id+"']").tooltip({title: content, html: true, placement: "right"});
+        }
+
+        var reportId = $('#query-id').val();
+        if (reportId != 'none'){
+            $("option[name='" + reportId +"']").prop('selected', true);
+            sync_user_custom_report();
+        }
+
+        $('#end-num-days').change(function(e) {
+            $today = new Date();
+            $calculatedDate = new Date($today);
+            $calculatedDate.setDate($today.getDate() - $('#end-num-days').val());
+            var day = ("0" + $calculatedDate.getDate()).slice(-2);
+            var month = ("0" + ($calculatedDate.getMonth() + 1)).slice(-2);
+            var dateAux = $calculatedDate.getFullYear()+"-"+(month)+"-"+(day) ;
+            $('#endDttm').val(dateAux);
+            $( "#today" ).val('N');
+            $( "#lastweek" ).val('N');
+            $( "#thisweek" ).val('N');
+            $( "#lastmonth" ).val('N');
+            $( "#thismonth" ).val('N');
+        });
+
+        $('#start-num-days').change(function(e) {
+            $today = new Date();
+            $calculatedDate = new Date($today);
+            $calculatedDate.setDate($today.getDate() - $('#start-num-days').val());
+            var day = ("0" + $calculatedDate.getDate()).slice(-2);
+            var month = ("0" + ($calculatedDate.getMonth() + 1)).slice(-2);
+            var dateAux = $calculatedDate.getFullYear()+"-"+(month)+"-"+(day) ;
+            $('#startDttm').val(dateAux);
+            $( "#today" ).val('N');
+            $( "#lastweek" ).val('N');
+            $( "#thisweek" ).val('N');
+            $( "#lastmonth" ).val('N');
+            $( "#thismonth" ).val('N');
+        });
+
+        $('#startDttm').change(function(e) {
+            $( "#today" ).val('N');
+            $( "#lastweek" ).val('N');
+            $( "#thisweek" ).val('N');
+            $( "#lastmonth" ).val('N');
+            $( "#thismonth" ).val('N');
+        });
+
+        $('#endDttm').change(function(e) {
+            $( "#today" ).val('N');
+            $( "#lastweek" ).val('N');
+            $( "#thisweek" ).val('N');
+            $( "#lastmonth" ).val('N');
+            $( "#thismonth" ).val('N');
+        });
+
+      /* Company is selected */
+      $("input[name='cbx-company']").change(function() {
+        var parentClass = $(this).val();
+        if ($(this).is(':checked')) {
+          var company_id = $(this).val();
+          var url = "/iot/webmonitor/filters/company/" + company_id + "/sites/";
+
+          $.getJSON(url, function(sites) {
+            var options = '';
+            for (var i = 0; i < sites.length; i++) {
+              options += '<div class="checkbox checkbox-info checkbox-circle cbx-site" name="' + parentClass + '">';
+              options += '<input type="checkbox" id="site-' + sites[i].fields['siteId'] + '" value="' + sites[i].fields['siteId'] + '" name="cbx-site" class="' + company_id + '.' + sites[i].fields['siteId'] + '"/>';
+              options += '<label for="site-' + sites[i].fields['siteId'] + '" class = "' + company_id + '.' + sites[i].fields['siteId'] + '">' + sites[i].fields['siteDescr'] + '</label>';
+              options += '</div>';
+            }
+            $("#site").append(options);
+            //$("select#site option:first").attr('selected', 'selected');
+            //$("select#site").attr('disabled', false);
+          });
+        } else {
+          $('div[name="' + parentClass + '"]').remove();
+        }
+      });
+
+      /* Site is selected */
+      $("#site").on("change", "input[type=checkbox]", function() {
+        var parentClass = $(this).attr("class");
+        if ($(this).is(':checked')) {
+          var site_id = $(this).val();
+          var index = parentClass.split(".");
+          var url = "/iot/webmonitor/filters/site/" + index[0] + "/" + index[1] + "/plants/";
+          $.getJSON(url, function(plants) {
+            var options = '';
+            for (var i = 0; i < plants.length; i++) {
+              options += '<div class="checkbox checkbox-info checkbox-circle cbx-plant" name="' + parentClass + '">';
+              options += '<input type="checkbox" id="plant-' + plants[i]['plantId'] + '" value="' + plants[i]['plantId'] + '" name="cbx-plant" class="' + parentClass + '.' + plants[i]['plantId'] + '">';
+              options += '<label for="plant-' + plants[i]['plantId'] + '" class = "' + classAttribute + '.' + plants[i]['plantId'] + '">' + plants[i]['plantDescr'] + '</label>';
+              classAttribute = classAttribute + '.' + plants[i]['plantId'];
+              options += '</div>';
+            }
+            $("#plant").append(options);
+            //$("select#site option:first").attr('selected', 'selected');
+            //$("select#site").attr('disabled', false);
+          });
+        } else {
+          $('div[name="' + parentClass + '"]').remove();
+        }
+      });
+
+      /* Plant is selected */
+      $("#plant").on("change", "input[type=checkbox]", function() {
+        var parentClass = $(this).attr("class");
+        if ($(this).is(':checked')) {
+          var plant_id = $(this).val();
+          var index = $(this).attr("class").split(".");
+          var url = "/iot/webmonitor/filters/plant/" + index[0] + "/" + index[1] + "/" + index[2] + "/machine_groups/";
+
+          $.getJSON(url, function(machine_groups) {
+            var options = '';
+            for (var i = 0; i < machine_groups.length; i++) {
+              options += '<div class="checkbox checkbox-info checkbox-circle cbx-machineGroup" name="' + parentClass + '">';
+              options += '<input type="checkbox" id="machine-group-' + machine_groups[i]['machineGroupId'] + '" value="' + machine_groups[i]['machineGroupId'] + '" name="cbx-machine-group" class="' + parentClass + '.' +
+                machine_groups[i]['machineGroupId'] + '">';
+              options += '<label for="machine-group-' + machine_groups[i]['machineGroupId'] + '" class = "' + classAttribute + '.' + machine_groups[i]['machineGroupId'] + '">' + machine_groups[i]['machineGroupDescr'] +
+                '</label>';
+              classAttribute = classAttribute + '.' + machine_groups[i]['machineGroupId'];
+              options += '</div>';
+            }
+            $("#machine-group").append(options);
+            //$("select#plant option:first").attr('selected', 'selected');
+            //$("select#plant").attr('disabled', false);
+          });
+        } else {
+          $('div[name="' + parentClass + '"]').remove();
+        }
+      });
+
+      /* machine group is selected */
+      $("#machine-group").on("change", "input[type=checkbox]", function() {
+        var parentClass = $(this).attr("class");
+        if ($(this).is(':checked')) {
+          var machine_group_id = $(this).val();
+          var index = $(this).attr("class").split(".");
+          var url = "/iot/webmonitor/filters/machine-group/" + index[0] + "/" + index[1] + "/" + index[2] + "/" + index[3] + "/machines/";
+
+          $.getJSON(url, function(machines) {
+            var options = '';
+            for (var i = 0; i < machines.length; i++) {
+              options += '<div class="checkbox checkbox-info checkbox-circle cbx-machine ' + machine_group_id + '" name="' + parentClass + '">';
+              options += '<input type="checkbox" name = "machine" id="machine-' + machines[i]['machineId'] + '" value="' + machines[i]['machineId'] + '" name="cbx-machine" class="' + parentClass + '.' + machines[i]['machineId'] + '">';
+              options += '<label for="machine-' + machines[i]['machineId'] + '" class = "' + classAttribute + '.' + machines[i]['machineId'] + '">' + machines[i]['machineDescr'] + '</label>';
+
+              options += '</div>';
+            }
+            $("#machine").append(options);
+            //$("select#machine option:first").attr('selected', 'selected');
+            //$("select#machine").attr('disabled', false);
+          });
+        } else {
+          $('div[name="' + parentClass + '"]').remove();
+        }
+      });
+
+      /* machine selected */
+      $("#machine").on("change", "input[type=checkbox]", function() {
+        if ($(this).is(':checked')) {
+        } else {
+
+        }
+      });
     });
